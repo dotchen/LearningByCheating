@@ -3,9 +3,10 @@
 This repo is the implemention of paper Learning by Cheating in CARLA 0.9.6.
 
 ![teaser](figs/fig1.png)
-> [**Learning by Cheating**](http://vladlen.info/papers/learning-by-cheating.pdf)    
+> [**Learning by Cheating**](https://arxiv.org/abs/1912.12294)    
 > Dian Chen, Brady Zhou, Vladlen Koltun, Philipp Kr&auml;henb&uuml;hl,        
-> [Conference on Robot Learning](https://www.robot-learning.org) (CoRL 2019)
+> [Conference on Robot Learning](https://www.robot-learning.org) (CoRL 2019)      
+> _arXiv 1912.12294_
 
 Code in CARLA 0.9.5 is coming soon.
 
