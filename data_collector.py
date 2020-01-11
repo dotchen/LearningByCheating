@@ -126,8 +126,8 @@ class NoisyAgent(RoamingAgentMine):
         self.last_throttle = 0
         self.noise_func = noise if noise else lambda: np.random.uniform(-0.25, 0.25)
 
-        self.speed_control = PIDController(K_P=0.5, K_I=0.5, K_D=0.1)
-        self.turn_control = PIDController(K_P=0.75, K_I=1.0, K_D=0.0)
+        self.speed_control = PIDController(K_P=0.5, K_I=0.5/20, K_D=0.1)
+        self.turn_control = PIDController(K_P=0.75, K_I=1.0/20, K_D=0.0)
 
     def run_step(self, observations):
         self.steps += 1
