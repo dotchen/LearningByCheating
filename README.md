@@ -22,6 +22,9 @@ If you find this repo to be useful in your research, please consider citing our 
 }
 ```
 
+## Video
+For a summarization of this project, please checkout our [video](https://youtu.be/u9ZCxxD-UUw).
+
 ## Installation
 Please refer to [INSTALL.md](INSTALL.md) for setup instructions. 
 
