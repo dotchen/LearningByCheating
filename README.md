@@ -29,7 +29,7 @@ For a summarization of this project, please checkout our [video](https://youtu.b
 Please refer to [INSTALL.md](INSTALL.md) for setup instructions. 
 
 ### Quick start
-We provide a quick script here in case you would like to skip compiling and directly use the official binary release:
+We provide a quick script [here](quick_start.sh) in case you would like to skip compiling and directly use the official binary release:
 
 ```bash
 # Download CARLA 0.9.6
@@ -70,8 +70,30 @@ wget http://www.cs.utexas.edu/~dchen/lbc_release/ckpts/privileged/config.json
 cd ../..
 ```
 
-Then, open up a terminal, inside the carla directory run `./CarlaUE4.sh -fps=10 -benchmark`. 
-Open another terminal and run `CUDA_VISIBLE_DEVICES="0" python benchmark_agent.py --suite=town2 --model-path=ckpts/image/model-10.th --show` to see the image model drive in the testing town!
+Once you are done with that, now you need to start the Carla Server and the LbC agent.
+
+### Running the Carla Server
+
+ - Open up a terminal
+ - Inside the carla directory run `./CarlaUE4.sh -fps=10 -benchmark`. 
+
+### Running the LbC Agent
+
+ - Open up another terminal to run the LbC agent.
+
+ - To run the LbC agent, you need to ensure your `PYTHONPATH` is set correctly. Make sure `[CARLA PATH]/PythonAPI` is in your `PYTHONPATH`
+   If you are inside the carla_lbc directory(created above), you can run the following command
+
+```
+export PYTHONPATH="`pwd`/PythonAPI;$PYTHONPATH" 
+```
+
+ - After ensuring your `PYTHONPATH` is set correctly, run this
+
+```
+CUDA_VISIBLE_DEVICES="0" python benchmark_agent.py --suite=town2 --model-path=ckpts/image/model-10.th --show
+```
+ - Now you can see the the image model drive in the testing town!
 
 ## Benchmark Results (0.9.6 w/ pedestrians fix)
 Since CARLA does not have an official 0.9+ version that supports pedestrian crossing, we modified the most up-to-date CARLA (0.9.6) to support pedestrian crossing to compare to the original benchmark.
