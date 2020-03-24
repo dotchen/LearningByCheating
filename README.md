@@ -273,6 +273,46 @@ Note that CARLA is non-deterministic, since currently we cannot control the rand
 ```
 
 ### Stage 1(purely offline) Agent
+
+```
+╔Performance of model-32═══════════╦═════════╦═══════╗
+║ Suite Name        ║ Success Rate ║ Total   ║ Seeds ║
+╠═══════════════════╬══════════════╬═════════╬═══════╣
+║ FullTown01-v1     ║ 93           ║ 93/100  ║ 0     ║
+║ FullTown01-v2     ║ 98           ║ 49/50   ║ 0     ║
+║ FullTown01-v3     ║ 94           ║ 94/100  ║ 0     ║
+║ FullTown01-v4     ║ 96           ║ 48/50   ║ 0     ║
+║ FullTown02-v1     ║ 94           ║ 94/100  ║ 0     ║
+║ FullTown02-v2     ║ 96           ║ 48/50   ║ 0     ║
+║ FullTown02-v3     ║ 92           ║ 92/100  ║ 0     ║
+║ FullTown02-v4     ║ 94           ║ 47/50   ║ 0     ║
+║ NoCrashTown01-v1  ║ 88.3 ± 1.5   ║ 265/300 ║ 0,1,2 ║
+║ NoCrashTown01-v2  ║ 91.3 ± 3.1   ║ 137/150 ║ 0,1,2 ║
+║ NoCrashTown01-v3  ║ 74.3 ± 3.8   ║ 223/300 ║ 0,1,2 ║
+║ NoCrashTown01-v4  ║ 71.3 ± 4.6   ║ 107/150 ║ 0,1,2 ║
+║ NoCrashTown01-v5  ║ 27.7 ± 3.5   ║ 83/300  ║ 0,1,2 ║
+║ NoCrashTown01-v6  ║ 24.7 ± 2.3   ║ 37/150  ║ 0,1,2 ║
+║ NoCrashTown02-v1  ║ 85.0 ± 2.6   ║ 255/300 ║ 0,1,2 ║
+║ NoCrashTown02-v2  ║ 80.7 ± 2.3   ║ 121/150 ║ 0,1,2 ║
+║ NoCrashTown02-v3  ║ 64.3 ± 4.0   ║ 193/300 ║ 0,1,2 ║
+║ NoCrashTown02-v4  ║ 60.0 ± 4.0   ║ 90/150  ║ 0,1,2 ║
+║ NoCrashTown02-v5  ║ 11.7 ± 2.3   ║ 35/300  ║ 0,1,2 ║
+║ NoCrashTown02-v6  ║ 11.3 ± 3.1   ║ 17/150  ║ 0,1,2 ║
+║ StraightTown01-v1 ║ 100          ║ 100/100 ║ 0     ║
+║ StraightTown01-v2 ║ 100          ║ 50/50   ║ 0     ║
+║ StraightTown02-v1 ║ 100          ║ 100/100 ║ 0     ║
+║ StraightTown02-v2 ║ 100          ║ 50/50   ║ 0     ║
+║ TurnTown01-v1     ║ 96           ║ 96/100  ║ 0     ║
+║ TurnTown01-v2     ║ 100          ║ 50/50   ║ 0     ║
+║ TurnTown02-v1     ║ 97           ║ 97/100  ║ 0     ║
+║ TurnTown02-v2     ║ 100          ║ 50/50   ║ 0     ║
+╚═══════════════════╩══════════════╩═════════╩═══════╝
+```
+
+Note that this is with different controller parameters from what we submitted for CoRL2019, yielding slightly different numbers.
+
+The original raw numbers are shown below
+
 ```
 ╔Performance of model-32═══════════╦═════════╦═══════╗
 ║ Suite Name        ║ Success Rate ║ Total   ║ Seeds ║
