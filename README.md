@@ -85,7 +85,7 @@ Once you are done with that, now you need to start the Carla Server and the LbC 
    If you are inside the carla_lbc directory(created above), you can run the following command
 
 ```
-export PYTHONPATH="`pwd`/PythonAPI;$PYTHONPATH" 
+export PYTHONPATH="`pwd`/PythonAPI:$PYTHONPATH" 
 ```
 
  - After ensuring your `PYTHONPATH` is set correctly, run this
