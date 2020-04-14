@@ -7,6 +7,8 @@ import random
 import numpy as np
 import math
 
+# import needed due to https://github.com/pytorch/pytorch/issues/36034
+import torchvision
 import carla
 
 from carla import ColorConverter
