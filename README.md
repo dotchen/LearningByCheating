@@ -41,6 +41,8 @@ cd carla_lbc
 # Download LBC
 git init
 git remote add origin https://github.com/dianchen96/LearningByCheating.git
+# rename the LICENSE file to avoid conflicts during the pull
+mv LICENSE CARLA_LICENSE 
 git pull origin release-0.9.6
 wget http://www.cs.utexas.edu/~dchen/lbc_release/navmesh/Town01.bin
 wget http://www.cs.utexas.edu/~dchen/lbc_release/navmesh/Town02.bin
