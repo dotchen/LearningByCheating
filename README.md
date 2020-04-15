@@ -72,25 +72,25 @@ wget http://www.cs.utexas.edu/~dchen/lbc_release/ckpts/privileged/config.json
 cd ../..
 ```
 
-Once you are done with that, now you need to start the Carla Server and the LbC agent.
+Once you are done with that, you need to start the Carla Server and the LbC agent.
 
 ### Running the Carla Server
 
- - Open up a terminal
+ - Open up a terminal.
  - Inside the carla directory run `./CarlaUE4.sh -fps=10 -benchmark`. 
 
 ### Running the LbC Agent
 
  - Open up another terminal to run the LbC agent.
 
- - To run the LbC agent, you need to ensure your `PYTHONPATH` is set correctly. Make sure `[CARLA PATH]/PythonAPI` is in your `PYTHONPATH`
-   If you are inside the carla_lbc directory(created above), you can run the following command
+ - To run the LbC agent, your `PYTHONPATH` needs to be set correctly. Make sure `[CARLA PATH]/PythonAPI` is in your `PYTHONPATH`
+   If you are inside the carla_lbc directory (created above), you can run the following command.
 
 ```
 export PYTHONPATH="`pwd`/PythonAPI:$PYTHONPATH" 
 ```
 
- - After ensuring your `PYTHONPATH` is set correctly, run this
+ - After ensuring your `PYTHONPATH` is set correctly, run this:
 
 ```
 CUDA_VISIBLE_DEVICES="0" python benchmark_agent.py --suite=town2 --model-path=ckpts/image/model-10.th --show
@@ -151,7 +151,7 @@ We are cleaning-up our CARLA 0.9.5 implementation, and the code is coming soon.
 ```bash
 python data_collector.py --dataset_path=[PATH]
 ```
-Use `--n_episodes` to select the number of trajectories you want to collect. Make sure `[CARLA PATH]/PythonAPI` is in your python path, or add `PYTHONPATH=[CARLA PATH]/PythonAPI before the call`.
+Use `--n_episodes` to select the number of trajectories you want to collect. Make sure `[CARLA PATH]/PythonAPI` is in your python path, or add `PYTHONPATH=[CARLA PATH]/PythonAPI` before the call.
 
 ### Train a privileged agent
 ```bash
@@ -197,11 +197,11 @@ Due to randomness, the retrained model will not be the same as the published, an
 
 ### Benchmarking models
 1. Start a CARLA server instance `./Carla.sh -fps=10 -benchmark -world-port=[PORT NUM]`
-2. Run `python benchmark_agent.py --suite=[SUITE NAME] --port=[PORT NUM] --model_path=[MODEL PATH]`. This will create a `summary.csv` in your `/benchmark` and benchmarking videos in `/benchmark/[SUITE NAME]`. 
-3. Once benchmarking is done, use `python view_benchmark_results.py [MODEL_PATH]/benchmark/[MODEL NAME]` to print a results table like the one shown below.
+2. Run `python benchmark_agent.py --suite=[SUITE NAME] --port=[PORT NUM] --model_path=[MODEL PATH]`. This will create a `summary.csv` in `/benchmark` and benchmarking videos in `/benchmark/[SUITE NAME]`.
+3. Once benchmarking is done, use `python view_benchmark_results.py [MODEL_PATH]/benchmark/[MODEL NAME]` to print a results table like the ones shown below.
 
 ####
-Note that CARLA is non-deterministic, since currently we cannot control the random seeds in the server. Our client-side random seed makes sure the other vehicles have the deterministic initial positions, but the the decision of whether to turn left or right at intersections is non-deterministic.
+Note that CARLA is non-deterministic, since currently we cannot control the random seeds in the server. Our client-side random seed makes sure the other vehicles have deterministic initial positions, but the decision of whether to turn left or right at intersections is non-deterministic.
 
 ## Detailed Benchmark Results
 ### Autopilot
