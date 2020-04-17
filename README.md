@@ -22,6 +22,9 @@ If you find this repo to be useful in your research, please consider citing our 
 }
 ```
 
+## CARLA Challenge
+Checkout our submission to the [2020 CARLA Challenge](https://github.com/bradyz/2020_CARLA_challenge)!
+
 ## Video
 For a summarization of this project, please checkout our [video](https://youtu.be/u9ZCxxD-UUw).
 
