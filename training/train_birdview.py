@@ -148,6 +148,9 @@ def train_or_eval(criterion, net, data, optim, is_train, config, is_first_epoch)
 
         tick = time.time()
 
+        del birdview, location, command, speed
+        del pred_location, loss, loss_mean
+
         if is_first_epoch and i == 10:
             iterator_tqdm.close()
             break

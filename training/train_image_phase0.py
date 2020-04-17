@@ -204,6 +204,9 @@ def train_or_eval(coord_converter, criterion, net, teacher_net, data, optim, is_
 
         tick = time.time()
 
+        del rgb_image, birdview, location, command, speed
+        del _teac_location, _pred_location, pred_location, teac_location, loss, loss_mean
+
         if is_first_epoch and i == 10:
             iterator_tqdm.close()
             break
