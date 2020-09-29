@@ -162,7 +162,7 @@ class ImageAgent(Agent):
         n = self.steer_points.get(str(_cmd), 1)
         closest = common.project_point_to_circle(targets[n], c, r)
         
-        acceleration = np.clip(target_speed - speed, 0.0, 1.0)
+        acceleration = target_speed - speed
 
         v = [1.0, 0.0, 0.0]
         w = [closest[0], closest[1], 0.0]
