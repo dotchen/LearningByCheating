@@ -32,6 +32,14 @@ SAVE_EPISODES = list(range(20))
 
 
 def crop_birdview(birdview, dx=0, dy=0):
+    """
+    Return a view of a view.
+
+    Args:
+        birdview: (todo): write your description
+        dx: (array): write your description
+        dy: (array): write your description
+    """
     x = 260 - CROP_SIZE // 2 + dx
     y = MAP_SIZE // 2 + dy
 
@@ -62,6 +70,25 @@ def rollout(replay_buffer, coord_converter, net, teacher_net, episode,
         image_agent_kwargs=dict(), birdview_agent_kwargs=dict(),
         episode_length=1000,
         n_vehicles=100, n_pedestrians=250, port=2000, planner="new"):
+    """
+    Rollout an image.
+
+    Args:
+        replay_buffer: (todo): write your description
+        coord_converter: (todo): write your description
+        net: (todo): write your description
+        teacher_net: (todo): write your description
+        episode: (str): write your description
+        image_agent_kwargs: (dict): write your description
+        dict: (todo): write your description
+        birdview_agent_kwargs: (dict): write your description
+        dict: (todo): write your description
+        episode_length: (int): write your description
+        n_vehicles: (str): write your description
+        n_pedestrians: (int): write your description
+        port: (int): write your description
+        planner: (todo): write your description
+    """
 
     from models.image import ImageAgent
     from models.birdview import BirdViewAgent
@@ -72,6 +99,13 @@ def rollout(replay_buffer, coord_converter, net, teacher_net, episode,
     weathers = list(cu.TRAIN_WEATHERS.keys())
         
     def _get_weight(a, b):
+        """
+        Calculate weight.
+
+        Args:
+            a: (array): write your description
+            b: (array): write your description
+        """
         loss_weight = np.mean((np.abs(a - b)*xy_bias).sum(axis=-1)*decay, axis=-1)
         x_weight = np.maximum(
             np.mean(a[...,0],axis=-1),
@@ -150,6 +184,19 @@ def rollout(replay_buffer, coord_converter, net, teacher_net, episode,
 
 
 def _train(replay_buffer, net, teacher_net, criterion, coord_converter, logger, config, episode):
+    """
+    Training function.
+
+    Args:
+        replay_buffer: (todo): write your description
+        net: (todo): write your description
+        teacher_net: (todo): write your description
+        criterion: (int): write your description
+        coord_converter: (todo): write your description
+        logger: (todo): write your description
+        config: (todo): write your description
+        episode: (str): write your description
+    """
     
     import torch
     from phase2_utils import _log_visuals, get_weight, repeat
@@ -259,6 +306,12 @@ def _train(replay_buffer, net, teacher_net, criterion, coord_converter, logger, 
 
 
 def train(config):
+    """
+    Training function.
+
+    Args:
+        config: (todo): write your description
+    """
 
     import utils.bz_utils as bzu
 

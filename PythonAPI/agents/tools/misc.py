@@ -43,6 +43,13 @@ def get_speed(vehicle):
 
 
 def compute_yaw_difference(yaw1, yaw2):
+    """
+    Computes the yaw angle between two vectors.
+
+    Args:
+        yaw1: (todo): write your description
+        yaw2: (todo): write your description
+    """
     u = np.array([
         math.cos(math.radians(yaw1)),
         math.sin(math.radians(yaw1)),
@@ -105,6 +112,13 @@ def compute_magnitude_angle(target_location, current_location, orientation):
 
 
 def distance_vehicle(waypoint, vehicle_transform):
+    """
+    Calculate the vehicle distance.
+
+    Args:
+        waypoint: (todo): write your description
+        vehicle_transform: (bool): write your description
+    """
     loc = vehicle_transform.location
     dx = waypoint.transform.location.x - loc.x
     dy = waypoint.transform.location.y - loc.y

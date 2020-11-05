@@ -48,6 +48,13 @@ def repeat(a, repeats, dim=0):
 
 
 def get_weight(learner_points, teacher_points):
+    """
+    Calculate the weight of the weight.
+
+    Args:
+        learner_points: (str): write your description
+        teacher_points: (str): write your description
+    """
     decay = torch.FloatTensor([0.7**i for i in range(5)]).to(learner_points.device)
     xy_bias = torch.FloatTensor([0.7,0.3]).to(learner_points.device)
     loss_weight = torch.mean((torch.abs(learner_points - teacher_points)*xy_bias).sum(dim=-1)*decay, dim=-1)
@@ -59,15 +66,36 @@ def get_weight(learner_points, teacher_points):
     return loss_weight
 
 def weighted_random_choice(weights):
+    """
+    Return a random weighted weighted weighted weighted weighted weighted weighted weighted weighted weighted weighted weighted weighted weighted weighted weighted weighted weighted weights.
+
+    Args:
+        weights: (array): write your description
+    """
     t = np.cumsum(weights)
     s = np.sum(weights)
     return np.searchsorted(t, random.uniform(0,s))
 
 def get_optimizer(parameters, lr=1e-4):
+    """
+    Get the optimizer.
+
+    Args:
+        parameters: (todo): write your description
+        lr: (str): write your description
+    """
     optimizer = torch.optim.Adam(parameters, lr=1e-4)
     return optimizer
 
 def load_image_model(backbone, ckpt, device='cuda'):
+    """
+    Loads an image from disk
+
+    Args:
+        backbone: (str): write your description
+        ckpt: (str): write your description
+        device: (str): write your description
+    """
     net = ImagePolicyModelSS(
         backbone,
         all_branch=True
@@ -77,6 +105,20 @@ def load_image_model(backbone, ckpt, device='cuda'):
     return net
     
 def _log_visuals(rgb_image, birdview, speed, command, loss, pred_locations, _pred_locations, _teac_locations, size=16):
+    """
+    Log_visualization.
+
+    Args:
+        rgb_image: (todo): write your description
+        birdview: (array): write your description
+        speed: (array): write your description
+        command: (list): write your description
+        loss: (todo): write your description
+        pred_locations: (todo): write your description
+        _pred_locations: (todo): write your description
+        _teac_locations: (todo): write your description
+        size: (int): write your description
+    """
     import cv2
     import numpy as np
     import utils.carla_utils as cu
@@ -97,15 +139,40 @@ def _log_visuals(rgb_image, birdview, speed, command, loss, pred_locations, _pre
         cols = [x * (canvas.shape[1] // 10) for x in range(10+1)]
 
         def _write(text, i, j):
+            """
+            Write text to the t.
+
+            Args:
+                text: (str): write your description
+                i: (todo): write your description
+                j: (todo): write your description
+            """
             cv2.putText(
                     canvas, text, (cols[j], rows[i]),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.35, (255,255,255), 1)
 
         def _dot(_canvas, i, j, color, radius=2):
+            """
+            Dot product ( i j )
+
+            Args:
+                _canvas: (array): write your description
+                i: (array): write your description
+                j: (array): write your description
+                color: (str): write your description
+                radius: (array): write your description
+            """
             x, y = int(j), int(i)
             _canvas[x-radius:x+radius+1, y-radius:y+radius+1] = color
         
         def _stick_together(a, b):
+            """
+            Concat ( b )
+
+            Args:
+                a: (str): write your description
+                b: (str): write your description
+            """
             h = min(a.shape[0], b.shape[0])
     
             r1 = h / a.shape[0]
@@ -135,6 +202,14 @@ def _log_visuals(rgb_image, birdview, speed, command, loss, pred_locations, _pre
     return [x[1] for x in sorted(images, reverse=True, key=lambda x: x[0])]
     
 def load_birdview_model(backbone, ckpt, device='cuda'):
+    """
+    Loads a preview model object.
+
+    Args:
+        backbone: (todo): write your description
+        ckpt: (todo): write your description
+        device: (str): write your description
+    """
     teacher_net = BirdViewPolicyModelSS(backbone, all_branch=True).to(device)
     teacher_net.load_state_dict(torch.load(ckpt))
     
@@ -142,6 +217,18 @@ def load_birdview_model(backbone, ckpt, device='cuda'):
     
 class CoordConverter():
     def __init__(self, w=384, h=160, fov=90, world_y=1.4, fixed_offset=4.0, device='cuda'):
+        """
+        Initialize the device.
+
+        Args:
+            self: (todo): write your description
+            w: (int): write your description
+            h: (int): write your description
+            fov: (todo): write your description
+            world_y: (todo): write your description
+            fixed_offset: (int): write your description
+            device: (todo): write your description
+        """
         self._img_size = torch.FloatTensor([w,h]).to(device)
         
         self._fov = fov
@@ -150,6 +237,13 @@ class CoordConverter():
         print ("Fixed offset", fixed_offset)
     
     def __call__(self, camera_locations):
+        """
+        Calculate the camera.
+
+        Args:
+            self: (todo): write your description
+            camera_locations: (str): write your description
+        """
         if isinstance(camera_locations, torch.Tensor):
             camera_locations = (camera_locations + 1) * self._img_size/2
         else:
@@ -183,12 +277,31 @@ class CoordConverter():
 
 class LocationLoss(torch.nn.Module):
     def forward(self, pred_locations, teac_locations):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            pred_locations: (todo): write your description
+            teac_locations: (todo): write your description
+        """
         pred_locations = pred_locations/(0.5*CROP_SIZE) - 1
         
         return torch.mean(torch.abs(pred_locations - teac_locations), dim=(1,2,3))
 
 class ReplayBuffer(torch.utils.data.Dataset):
     def __init__(self, buffer_limit=100000, augment=None, sampling=True, aug_fix_iter=1000000, batch_aug=4):
+        """
+        Initialize the sampling.
+
+        Args:
+            self: (todo): write your description
+            buffer_limit: (int): write your description
+            augment: (str): write your description
+            sampling: (todo): write your description
+            aug_fix_iter: (str): write your description
+            batch_aug: (todo): write your description
+        """
         self.buffer_limit = buffer_limit
         self._data = []
         self._weights = []
@@ -209,9 +322,22 @@ class ReplayBuffer(torch.utils.data.Dataset):
         self.batch_aug = batch_aug
             
     def __len__(self):
+        """
+        Returns the length of the data.
+
+        Args:
+            self: (todo): write your description
+        """
         return len(self._data)
 
     def __getitem__(self, _idx):
+        """
+        Return an image item.
+
+        Args:
+            self: (todo): write your description
+            _idx: (str): write your description
+        """
         if self._sampling and self.normalized:
             while True:
                 idx = weighted_random_choice(self._weights)
@@ -238,6 +364,14 @@ class ReplayBuffer(torch.utils.data.Dataset):
         return idx, rgb_imgs, cmd, speed, target, birdview_img
         
     def update_weights(self, idxes, losses):
+        """
+        Update the weights with the weights.
+
+        Args:
+            self: (todo): write your description
+            idxes: (array): write your description
+            losses: (todo): write your description
+        """
         idxes = idxes.numpy()
         losses = losses.detach().cpu().numpy()
         for idx, loss in zip(idxes, losses):
@@ -247,13 +381,37 @@ class ReplayBuffer(torch.utils.data.Dataset):
             self._new_weights[idx] = loss
             
     def init_new_weights(self):
+        """
+        Initialize new weights.
+
+        Args:
+            self: (todo): write your description
+        """
         self._new_weights = self._weights.copy()
             
     def normalize_weights(self):
+        """
+        Normalize the weights.
+
+        Args:
+            self: (array): write your description
+        """
         self._weights = self._new_weights
         self.normalized = True
 
     def add_data(self, rgb_img, cmd, speed, target, birdview_img, weight):
+        """
+        Add an rgb image.
+
+        Args:
+            self: (todo): write your description
+            rgb_img: (str): write your description
+            cmd: (str): write your description
+            speed: (int): write your description
+            target: (str): write your description
+            birdview_img: (str): write your description
+            weight: (str): write your description
+        """
         self.normalized = False
         self._data.append((rgb_img, cmd, speed, target, birdview_img))
         self._weights.append(weight)
@@ -266,10 +424,24 @@ class ReplayBuffer(torch.utils.data.Dataset):
             
             
     def remove_data(self, idx):
+        """
+        Removes the element from the given index.
+
+        Args:
+            self: (todo): write your description
+            idx: (int): write your description
+        """
         self._weights.pop(idx)
         self._data.pop(idx)
             
     def get_highest_k(self, k):
+        """
+        Return the k k k k k k k k ( k.
+
+        Args:
+            self: (todo): write your description
+            k: (todo): write your description
+        """
         top_idxes = np.argsort(self._weights)[-k:]
         rgb_images = []
         bird_views = []

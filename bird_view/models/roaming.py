@@ -18,6 +18,16 @@ TURNING_PID = {
 
 class RoamingAgentMine(Agent):
     def __init__(self, vehicle, resolution, threshold_before, threshold_after):
+        """
+        Initialize a low - level.
+
+        Args:
+            self: (todo): write your description
+            vehicle: (todo): write your description
+            resolution: (todo): write your description
+            threshold_before: (float): write your description
+            threshold_after: (float): write your description
+        """
         super().__init__(vehicle)
 
         self._proximity_threshold = 9.5
@@ -30,6 +40,15 @@ class RoamingAgentMine(Agent):
         self.debug = dict()
 
     def run_step(self, inputs=None, debug=False, debug_info=None):
+        """
+        Run a single step.
+
+        Args:
+            self: (todo): write your description
+            inputs: (array): write your description
+            debug: (bool): write your description
+            debug_info: (todo): write your description
+        """
         self._local_planner.run_step()
 
         ox = self._vehicle.get_transform().get_forward_vector().x

@@ -25,6 +25,11 @@ import time
 
 
 def main():
+    """
+    Main function.
+
+    Args:
+    """
     actor_list = []
 
     # In this tutorial script, we are going to add a vehicle to the simulation

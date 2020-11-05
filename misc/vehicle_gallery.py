@@ -26,12 +26,25 @@ import time
 
 
 def get_transform(vehicle_location, angle, d=6.4):
+    """
+    Calculate the rotation of a given angle.
+
+    Args:
+        vehicle_location: (str): write your description
+        angle: (str): write your description
+        d: (str): write your description
+    """
     a = math.radians(angle)
     location = carla.Location(d * math.cos(a), d * math.sin(a), 2.0) + vehicle_location
     return carla.Transform(location, carla.Rotation(yaw=180 + angle, pitch=-15))
 
 
 def main():
+    """
+    Main function.
+
+    Args:
+    """
     client = carla.Client('localhost', 2000)
     client.set_timeout(2.0)
     world = client.get_world()

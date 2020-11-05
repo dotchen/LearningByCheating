@@ -40,6 +40,13 @@ except ImportError:
 
 
 def draw_image(surface, image):
+    """
+    Draws an image.
+
+    Args:
+        surface: (str): write your description
+        image: (array): write your description
+    """
     array = np.frombuffer(image.raw_data, dtype=np.dtype("uint8"))
     array = np.reshape(array, (image.height, image.width, 4))
     array = array[:, :, :3]
@@ -49,6 +56,11 @@ def draw_image(surface, image):
 
 
 def get_font():
+    """
+    Get the current font.
+
+    Args:
+    """
     fonts = [x for x in pygame.font.get_fonts()]
     default_font = 'ubuntumono'
     font = default_font if default_font in fonts else fonts[0]
@@ -57,6 +69,11 @@ def get_font():
 
 
 def should_quit():
+    """
+    Returns true if the game is a quit.
+
+    Args:
+    """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             return True
@@ -67,6 +84,11 @@ def should_quit():
 
 
 def main():
+    """
+    Main function.
+
+    Args:
+    """
     actor_list = []
     pygame.init()
 

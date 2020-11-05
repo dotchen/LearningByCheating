@@ -9,12 +9,25 @@ from imgaug import augmenters as iaa
 
 
 def custom(image_iteration, batch_size=32):
+    """
+    Wrapper for iteration.
+
+    Args:
+        image_iteration: (int): write your description
+        batch_size: (int): write your description
+    """
     
     iteration = image_iteration/(batch_size*1.5)
     
 
 
 def medium(image_iteration):
+    """
+    Generate a fourier image
+
+    Args:
+        image_iteration: (int): write your description
+    """
 
 
     iteration = image_iteration/(32*1.5)
@@ -68,6 +81,12 @@ def medium(image_iteration):
 
 
 def soft(image_iteration):
+    """
+    Apply soft soft soft soft soft soft pixels.
+
+    Args:
+        image_iteration: (int): write your description
+    """
 
     iteration = image_iteration/(32*1.5)
     frequency_factor = 0.05 + float(iteration)/1200000.0
@@ -120,6 +139,12 @@ def soft(image_iteration):
 
 
 def high(image_iteration):
+    """
+    Highlight an image.
+
+    Args:
+        image_iteration: (int): write your description
+    """
 
     iteration = image_iteration/(32*1.5)
     frequency_factor = 0.05 + float(iteration)/800000.0
@@ -172,6 +197,12 @@ def high(image_iteration):
 
 
 def medium_harder(image_iteration):
+    """
+    Generate a horizontal horizontal horizontal color image.
+
+    Args:
+        image_iteration: (int): write your description
+    """
 
 
     iteration = image_iteration/(32)
@@ -337,6 +368,12 @@ def custom(image_iteration):
 
 
 def soft_harder(image_iteration):
+    """
+    Apply soft_hard image_harder.
+
+    Args:
+        image_iteration: (int): write your description
+    """
 
     iteration = image_iteration/(32)
     frequency_factor = 0.05 + float(iteration)/1200000.0

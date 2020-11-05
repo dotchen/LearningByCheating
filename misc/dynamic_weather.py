@@ -32,16 +32,39 @@ import math
 
 
 def clamp(value, minimum=0.0, maximum=100.0):
+    """
+    Return the minimum value.
+
+    Args:
+        value: (float): write your description
+        minimum: (todo): write your description
+        maximum: (int): write your description
+    """
     return max(minimum, min(value, maximum))
 
 
 class Sun(object):
     def __init__(self, azimuth, altitude):
+        """
+        Initialize azimuth.
+
+        Args:
+            self: (todo): write your description
+            azimuth: (int): write your description
+            altitude: (todo): write your description
+        """
         self.azimuth = azimuth
         self.altitude = altitude
         self._t = 0.0
 
     def tick(self, delta_seconds):
+        """
+        Change the current timer.
+
+        Args:
+            self: (todo): write your description
+            delta_seconds: (str): write your description
+        """
         self._t += 0.008 * delta_seconds
         self._t %= 2.0 * math.pi
         self.azimuth += 0.25 * delta_seconds
@@ -49,11 +72,24 @@ class Sun(object):
         self.altitude = 35.0 * (math.sin(self._t) + 1.0)
 
     def __str__(self):
+        """
+        Return a string representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return 'Sun(%.2f, %.2f)' % (self.azimuth, self.altitude)
 
 
 class Storm(object):
     def __init__(self, precipitation):
+        """
+        Init precipitation
+
+        Args:
+            self: (todo): write your description
+            precipitation: (todo): write your description
+        """
         self._t = precipitation if precipitation > 0.0 else -50.0
         self._increasing = True
         self.clouds = 0.0
@@ -62,6 +98,13 @@ class Storm(object):
         self.wind = 0.0
 
     def tick(self, delta_seconds):
+        """
+        Advance the timer.
+
+        Args:
+            self: (todo): write your description
+            delta_seconds: (str): write your description
+        """
         delta = (1.3 if self._increasing else -1.3) * delta_seconds
         self._t = clamp(delta + self._t, -250.0, 100.0)
         self.clouds = clamp(self._t + 40.0, 0.0, 90.0)
@@ -75,16 +118,36 @@ class Storm(object):
             self._increasing = False
 
     def __str__(self):
+        """
+        Return a string representation of this node.
+
+        Args:
+            self: (todo): write your description
+        """
         return 'Storm(clouds=%d%%, rain=%d%%, wind=%d%%)' % (self.clouds, self.rain, self.wind)
 
 
 class Weather(object):
     def __init__(self, weather):
+        """
+        Initialize weather.
+
+        Args:
+            self: (todo): write your description
+            weather: (todo): write your description
+        """
         self.weather = weather
         self._sun = Sun(weather.sun_azimuth_angle, weather.sun_altitude_angle)
         self._storm = Storm(weather.precipitation)
 
     def tick(self, delta_seconds):
+        """
+        Calculate delta.
+
+        Args:
+            self: (todo): write your description
+            delta_seconds: (str): write your description
+        """
         self._sun.tick(delta_seconds)
         self._storm.tick(delta_seconds)
         self.weather.cloudyness = self._storm.clouds
@@ -95,10 +158,21 @@ class Weather(object):
         self.weather.sun_altitude_angle = self._sun.altitude
 
     def __str__(self):
+        """
+        Returns a string representation of the sun.
+
+        Args:
+            self: (todo): write your description
+        """
         return '%s %s' % (self._sun, self._storm)
 
 
 def main():
+    """
+    Main function.
+
+    Args:
+    """
     argparser = argparse.ArgumentParser(
         description=__doc__)
     argparser.add_argument(

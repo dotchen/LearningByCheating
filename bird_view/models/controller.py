@@ -42,6 +42,17 @@ def ls_circle(points):
 
 class PIDController(object):
     def __init__(self, K_P=1.0, K_I=0.0, K_D=0.0, fps=10, n=30, **kwargs):
+        """
+        Initialize the k_P
+
+        Args:
+            self: (todo): write your description
+            K_P: (float): write your description
+            K_I: (int): write your description
+            K_D: (float): write your description
+            fps: (todo): write your description
+            n: (int): write your description
+        """
         self._K_P = K_P
         self._K_I = K_I
         self._K_D = K_D
@@ -51,6 +62,13 @@ class PIDController(object):
         self._window = deque(maxlen=self._n)
 
     def step(self, error):
+        """
+        R minimise the time step.
+
+        Args:
+            self: (todo): write your description
+            error: (todo): write your description
+        """
         self._window.append(error)
 
         if len(self._window) >= 2:
@@ -70,6 +88,17 @@ class PIDController(object):
 
 class CustomController():
     def __init__(self, controller_args, k=0.5, n=2, wheelbase=2.89, dt=0.1):
+        """
+        Initialize the controller.
+
+        Args:
+            self: (todo): write your description
+            controller_args: (dict): write your description
+            k: (int): write your description
+            n: (int): write your description
+            wheelbase: (str): write your description
+            dt: (float): write your description
+        """
         self._wheelbase = wheelbase
         self._k = k
 
@@ -83,6 +112,14 @@ class CustomController():
         
 
     def run_step(self, alpha, cmd):
+        """
+        Run a single step.
+
+        Args:
+            self: (todo): write your description
+            alpha: (float): write your description
+            cmd: (list): write your description
+        """
         self._e_buffer.append(alpha)
         
         if len(self._e_buffer) >= 2:

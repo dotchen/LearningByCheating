@@ -2,12 +2,26 @@ import torch
 
 class SummaryWriter:
 	def __init__(self, *args, **kwargs):
+     """
+     Initialize the module.
+
+     Args:
+         self: (todo): write your description
+     """
 		print("tensorboardX not found. You need to install it to use the SummaryWriter.")
 		print("try: pip3 install tensorboardX")
 		raise ImportError
 		
 class UnNormalize(object):
     def __init__(self, mean=[0.2929, 0.3123, 0.3292], std=[0.0762, 0.0726, 0.0801]):
+        """
+        Initialize standard deviation.
+
+        Args:
+            self: (todo): write your description
+            mean: (float): write your description
+            std: (array): write your description
+        """
         self.mean = mean
         self.std = std
 
@@ -31,6 +45,14 @@ except ImportError:
 	pass
 
 def one_hot(x, num_digits=4, start=1):
+    """
+    One - hot encoding of x.
+
+    Args:
+        x: (todo): write your description
+        num_digits: (int): write your description
+        start: (todo): write your description
+    """
     N = x.size()[0]
     x = x.long()[:,None]-start
     x = torch.clamp(x, 0, num_digits-1)
@@ -40,6 +62,16 @@ def one_hot(x, num_digits=4, start=1):
     return y
     
 def viz_image_pred(rgb, pred_locations, gt_locations, dot_radius=2, unnormalizer=None):
+    """
+    Viz_image_predations
+
+    Args:
+        rgb: (todo): write your description
+        pred_locations: (todo): write your description
+        gt_locations: (todo): write your description
+        dot_radius: (float): write your description
+        unnormalizer: (bool): write your description
+    """
     if unnormalizer:
         rgb_viz = unnormalizer(rgb.clone())
     else:
@@ -59,6 +91,15 @@ def viz_image_pred(rgb, pred_locations, gt_locations, dot_radius=2, unnormalizer
     return rgb_viz
     
 def viz_birdview_pred(bird_view_viz, pred_locations, gt_locations, dot_radius=2):
+    """
+    Calculate the vizview position from the position.
+
+    Args:
+        bird_view_viz: (todo): write your description
+        pred_locations: (todo): write your description
+        gt_locations: (todo): write your description
+        dot_radius: (float): write your description
+    """
     for i, step_locations in enumerate(gt_locations.int()):
         for x, y in step_locations:
             bird_view_viz[i,0,y-dot_radius:y+dot_radius+1,x-dot_radius:x+dot_radius+1] = 0

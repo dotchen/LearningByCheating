@@ -9,6 +9,12 @@ import torchvision.utils as tv_utils
 
 
 def _preprocess_image(x):
+    """
+    Preprocess an image.
+
+    Args:
+        x: (todo): write your description
+    """
     if isinstance(x, torch.Tensor):
         if x.requires_grad:
             x = x.detach()
@@ -27,6 +33,11 @@ def _preprocess_image(x):
 
 
 def _format(**kwargs):
+    """
+    Formats a list of kwargs.
+
+    Args:
+    """
     result = list()
 
     for k, v in kwargs.items():
@@ -40,6 +51,13 @@ def _format(**kwargs):
 
 class Wrapper(object):
     def __init__(self, log):
+        """
+        Initialize the instance.
+
+        Args:
+            self: (todo): write your description
+            log: (todo): write your description
+        """
         self.epoch = 0
         self._log = log
         self._writer = None
@@ -49,6 +67,13 @@ class Wrapper(object):
         self.debug = self._log.debug
 
     def init(self, log_path):
+        """
+        Initialize handlers.
+
+        Args:
+            self: (todo): write your description
+            log_path: (str): write your description
+        """
         for i in self._log._handlers:
             self._log.remove(i)
 
@@ -58,6 +83,12 @@ class Wrapper(object):
                 format='{time:MM/DD/YY HH:mm:ss} {level}\t{message}')
 
     def scalar(self, **kwargs):
+        """
+        Set scalars.
+
+        Args:
+            self: (todo): write your description
+        """
         for k, v in sorted(kwargs.items()):
             if k not in self.scalars:
                 self.scalars[k] = list()
@@ -65,10 +96,22 @@ class Wrapper(object):
             self.scalars[k].append(v)
 
     def image(self, **kwargs):
+        """
+        Apply kwargs.
+
+        Args:
+            self: (todo): write your description
+        """
         for k, v in sorted(kwargs.items()):
             self._writer.add_image(k, _preprocess_image(v), self.epoch)
 
     def end_epoch(self):
+        """
+        Write epoch
+
+        Args:
+            self: (todo): write your description
+        """
         for k, v in self.scalars.items():
             info = OrderedDict()
             info[k] = np.mean(v)

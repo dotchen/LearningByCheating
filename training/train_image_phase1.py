@@ -34,6 +34,18 @@ SAVE_EPOCHS = [1, 2, 4, 8, 16, 32, 64, 128, 192, 256]
 
 class CoordConverter():
     def __init__(self, w=384, h=160, fov=90, world_y=1.4, fixed_offset=2.0, device='cuda'):
+        """
+        Initialize the device.
+
+        Args:
+            self: (todo): write your description
+            w: (int): write your description
+            h: (int): write your description
+            fov: (todo): write your description
+            world_y: (todo): write your description
+            fixed_offset: (int): write your description
+            device: (todo): write your description
+        """
         self._img_size = torch.FloatTensor([w,h]).to(device)
         
         self._fov = fov
@@ -41,6 +53,13 @@ class CoordConverter():
         self._fixed_offset = fixed_offset
     
     def __call__(self, camera_locations):
+        """
+        Call the camera_locations method
+
+        Args:
+            self: (todo): write your description
+            camera_locations: (str): write your description
+        """
         camera_locations = (camera_locations + 1) * self._img_size/2
         w, h = self._img_size
         
@@ -65,11 +84,33 @@ class CoordConverter():
         
 class LocationLoss(torch.nn.Module):
     def forward(self, pred_locations, teac_locations):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            pred_locations: (todo): write your description
+            teac_locations: (todo): write your description
+        """
         pred_locations = pred_locations/(0.5*CROP_SIZE) - 1
         
         return torch.mean(torch.abs(pred_locations - teac_locations), dim=(1,2,3))
 
 def _log_visuals(rgb_image, birdview, speed, command, loss, pred_locations, _pred_locations, _teac_locations, size=8):
+    """
+    Log_visualization.
+
+    Args:
+        rgb_image: (todo): write your description
+        birdview: (array): write your description
+        speed: (array): write your description
+        command: (list): write your description
+        loss: (todo): write your description
+        pred_locations: (todo): write your description
+        _pred_locations: (todo): write your description
+        _teac_locations: (todo): write your description
+        size: (int): write your description
+    """
     import cv2
     import numpy as np
     import utils.carla_utils as cu
@@ -90,15 +131,40 @@ def _log_visuals(rgb_image, birdview, speed, command, loss, pred_locations, _pre
         cols = [x * (canvas.shape[1] // 10) for x in range(10+1)]
 
         def _write(text, i, j):
+            """
+            Write text to the t.
+
+            Args:
+                text: (str): write your description
+                i: (todo): write your description
+                j: (todo): write your description
+            """
             cv2.putText(
                     canvas, text, (cols[j], rows[i]),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.35, (255,255,255), 1)
 
         def _dot(_canvas, i, j, color, radius=2):
+            """
+            Dot product ( i j )
+
+            Args:
+                _canvas: (array): write your description
+                i: (array): write your description
+                j: (array): write your description
+                color: (str): write your description
+                radius: (array): write your description
+            """
             x, y = int(j), int(i)
             _canvas[x-radius:x+radius+1, y-radius:y+radius+1] = color
         
         def _stick_together(a, b):
+            """
+            Concat ( b )
+
+            Args:
+                a: (str): write your description
+                b: (str): write your description
+            """
             h = min(a.shape[0], b.shape[0])
     
             r1 = h / a.shape[0]
@@ -155,6 +221,20 @@ def repeat(a, repeats, dim=0):
 
 
 def train_or_eval(coord_converter, criterion, net, teacher_net, data, optim, is_train, config, is_first_epoch):
+    """
+    Evaluate an image.
+
+    Args:
+        coord_converter: (todo): write your description
+        criterion: (int): write your description
+        net: (todo): write your description
+        teacher_net: (todo): write your description
+        data: (array): write your description
+        optim: (todo): write your description
+        is_train: (bool): write your description
+        config: (todo): write your description
+        is_first_epoch: (todo): write your description
+    """
     if is_train:
         desc = 'Train'
         net.train()
@@ -230,6 +310,12 @@ def train_or_eval(coord_converter, criterion, net, teacher_net, data, optim, is_
 
 
 def train(config):
+    """
+    Training function.
+
+    Args:
+        config: (todo): write your description
+    """
     bzu.log.init(config['log_dir'])
     bzu.log.save_config(config)
     teacher_config = bzu.log.load_config(config['teacher_args']['model_path'])

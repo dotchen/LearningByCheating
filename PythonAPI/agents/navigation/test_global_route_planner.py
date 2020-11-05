@@ -14,6 +14,12 @@ class Test_GlobalRoutePlanner(unittest.TestCase):
     """
 
     def setUp(self):
+        """
+        Sets up to the world.
+
+        Args:
+            self: (todo): write your description
+        """
         # == Utilities test instance without DAO == #
         self.simple_grp = GlobalRoutePlanner(None)
 
@@ -26,6 +32,12 @@ class Test_GlobalRoutePlanner(unittest.TestCase):
         pass
 
     def tearDown(self):
+        """
+        Tear down the tear.
+
+        Args:
+            self: (todo): write your description
+        """
         self.simple_grp = None
         self.dao_grp = None
         self.integ_grp = None

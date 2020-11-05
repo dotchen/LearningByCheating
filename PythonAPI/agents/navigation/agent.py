@@ -182,6 +182,13 @@ class Agent(object):
         return (False, None)
 
     def _is_walker_hazard(self, walkers_list):
+        """
+        Return true if a list of a list of a list of points.
+
+        Args:
+            self: (todo): write your description
+            walkers_list: (list): write your description
+        """
         ego_vehicle_location = self._vehicle.get_location()
         ego_vehicle_waypoint = self._map.get_waypoint(ego_vehicle_location)
 
@@ -266,12 +273,27 @@ class Agent(object):
 
 
     def _world_to_pixel(self, location, offset=(0, 0)):
+        """
+        Return the world coordinates of a pixel coordinates.
+
+        Args:
+            self: (todo): write your description
+            location: (str): write your description
+            offset: (int): write your description
+        """
         world_offset = WORLD_OFFSETS[self._map.name]
         x = PIXELS_PER_METER * (location.x - world_offset[0])
         y = PIXELS_PER_METER * (location.y - world_offset[1])
         return [int(x - offset[0]), int(y - offset[1])]
     
     def _is_point_on_sidewalk(self, loc):
+        """
+        Return true if a point is on a given location.
+
+        Args:
+            self: (todo): write your description
+            loc: (todo): write your description
+        """
         # Convert to pixel coordinate
         pixel_x, pixel_y = self._world_to_pixel(loc)
         pixel_y = np.clip(pixel_y, 0, self._road_map.shape[0]-1)

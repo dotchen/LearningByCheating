@@ -35,6 +35,18 @@ SAVE_EPOCHS = [1, 2, 4, 8, 16, 32, 64, 128, 256, 384, 512, 768, 1000]
 
 class CoordConverter():
     def __init__(self, w=384, h=160, fov=90, world_y=1.4, fixed_offset=4.0, device='cuda'):
+        """
+        Initialize the device.
+
+        Args:
+            self: (todo): write your description
+            w: (int): write your description
+            h: (int): write your description
+            fov: (todo): write your description
+            world_y: (todo): write your description
+            fixed_offset: (int): write your description
+            device: (todo): write your description
+        """
         self._w = w
         self._h = h
         self._img_size = torch.FloatTensor([w,h]).to(device)
@@ -52,6 +64,13 @@ class CoordConverter():
         ])
         
     def _project_image_xy(self, xy):
+        """
+        Projects a 2d to image coordinates.
+
+        Args:
+            self: (todo): write your description
+            xy: (todo): write your description
+        """
         N = len(xy)
         xyz = np.zeros((N,3))
         xyz[:,0] = xy[:,0]
@@ -65,6 +84,13 @@ class CoordConverter():
         return image_xy[:,0]
     
     def __call__(self, map_locations):
+        """
+        Call the map_locator.
+
+        Args:
+            self: (todo): write your description
+            map_locations: (todo): write your description
+        """
         teacher_locations = map_locations.detach().cpu().numpy()
         teacher_locations = (teacher_locations + 1) * CROP_SIZE / 2
         N = teacher_locations.shape[0]
@@ -80,15 +106,46 @@ class CoordConverter():
 
 class LocationLoss(torch.nn.Module):
     def __init__(self, w=384, h=160, device='cuda', **kwargs):
+        """
+        Initialize the device.
+
+        Args:
+            self: (todo): write your description
+            w: (int): write your description
+            h: (int): write your description
+            device: (todo): write your description
+        """
         super().__init__()
         self._img_size = torch.FloatTensor([w,h]).to(device)
     
     def forward(self, pred_locations, locations):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            pred_locations: (todo): write your description
+            locations: (list): write your description
+        """
         locations = locations.to(pred_locations.device)
         locations = locations/(0.5*self._img_size) - 1
         return torch.mean(torch.abs(pred_locations - locations), dim=(1,2))
 
 def _log_visuals(rgb_image, birdview, speed, command, loss, pred_locations, teac_locations, _teac_locations, size=32):
+    """
+    Log_visualization.
+
+    Args:
+        rgb_image: (todo): write your description
+        birdview: (array): write your description
+        speed: (array): write your description
+        command: (list): write your description
+        loss: (todo): write your description
+        pred_locations: (todo): write your description
+        teac_locations: (todo): write your description
+        _teac_locations: (todo): write your description
+        size: (int): write your description
+    """
     import cv2
     import numpy as np
     import utils.carla_utils as cu
@@ -109,15 +166,40 @@ def _log_visuals(rgb_image, birdview, speed, command, loss, pred_locations, teac
         cols = [x * (canvas.shape[1] // 10) for x in range(10+1)]
 
         def _write(text, i, j):
+            """
+            Write text to the t.
+
+            Args:
+                text: (str): write your description
+                i: (todo): write your description
+                j: (todo): write your description
+            """
             cv2.putText(
                     canvas, text, (cols[j], rows[i]),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.35, (255,255,255), 1)
 
         def _dot(_canvas, i, j, color, radius=2):
+            """
+            Dot product ( i j )
+
+            Args:
+                _canvas: (array): write your description
+                i: (array): write your description
+                j: (array): write your description
+                color: (str): write your description
+                radius: (array): write your description
+            """
             x, y = int(j), int(i)
             _canvas[x-radius:x+radius+1, y-radius:y+radius+1] = color
         
         def _stick_together(a, b):
+            """
+            Concat ( b )
+
+            Args:
+                a: (str): write your description
+                b: (str): write your description
+            """
             h = min(a.shape[0], b.shape[0])
     
             r1 = h / a.shape[0]
@@ -150,6 +232,20 @@ def _log_visuals(rgb_image, birdview, speed, command, loss, pred_locations, teac
 
 
 def train_or_eval(coord_converter, criterion, net, teacher_net, data, optim, is_train, config, is_first_epoch):
+    """
+    Evaluate an objective.
+
+    Args:
+        coord_converter: (todo): write your description
+        criterion: (int): write your description
+        net: (todo): write your description
+        teacher_net: (todo): write your description
+        data: (array): write your description
+        optim: (todo): write your description
+        is_train: (bool): write your description
+        config: (todo): write your description
+        is_first_epoch: (todo): write your description
+    """
     if is_train:
         desc = 'Train'
         net.train()
@@ -212,6 +308,12 @@ def train_or_eval(coord_converter, criterion, net, teacher_net, data, optim, is_
 
 
 def train(config):
+    """
+    Training function.
+
+    Args:
+        config: (todo): write your description
+    """
     bzu.log.init(config['log_dir'])
     bzu.log.save_config(config)
     teacher_config = bzu.log.load_config(config['teacher_args']['model_path'])

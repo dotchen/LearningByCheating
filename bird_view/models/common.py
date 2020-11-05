@@ -16,6 +16,14 @@ MAP_SIZE = 320
 
 
 def crop_birdview(birdview, dx=0, dy=0):
+    """
+    Return a view of a view.
+
+    Args:
+        birdview: (todo): write your description
+        dx: (array): write your description
+        dy: (array): write your description
+    """
     x = 260 - CROP_SIZE // 2 + dx
     y = MAP_SIZE // 2 + dy
 
@@ -27,6 +35,13 @@ def crop_birdview(birdview, dx=0, dy=0):
 
 
 def select_branch(branches, one_hot):
+    """
+    Return the indices of the branches in - place.
+
+    Args:
+        branches: (todo): write your description
+        one_hot: (todo): write your description
+    """
     shape = branches.size()
 
     for i, s in enumerate(shape[2:]):
@@ -36,6 +51,13 @@ def select_branch(branches, one_hot):
 
 
 def signed_angle(u, v):
+    """
+    Return angle between vectors u and v.
+
+    Args:
+        u: (array): write your description
+        v: (array): write your description
+    """
     theta = math.acos(np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v)))
 
     if np.cross(u, v)[2] < 0:
@@ -45,6 +67,14 @@ def signed_angle(u, v):
 
 
 def project_point_to_circle(point, c, r):
+    """
+    Convert a point on a circle.
+
+    Args:
+        point: (int): write your description
+        c: (todo): write your description
+        r: (todo): write your description
+    """
     direction = point - c
     closest = c + (direction / np.linalg.norm(direction)) * r
 
@@ -52,6 +82,14 @@ def project_point_to_circle(point, c, r):
 
 
 def make_arc(points, c, r):
+    """
+    Generate a circle.
+
+    Args:
+        points: (array): write your description
+        c: (todo): write your description
+        r: (todo): write your description
+    """
     point_min = project_point_to_circle(points[0], c, r)
     point_max = project_point_to_circle(points[-1], c, r)
 
@@ -68,6 +106,16 @@ def make_arc(points, c, r):
 
 class ResnetBase(nn.Module):
     def __init__(self, backbone, input_channel=3, bias_first=True, pretrained=False):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+            backbone: (todo): write your description
+            input_channel: (todo): write your description
+            bias_first: (str): write your description
+            pretrained: (bool): write your description
+        """
         super().__init__()
         
 
@@ -85,33 +133,80 @@ class ResnetBase(nn.Module):
 
 class Normalize(nn.Module):
     def __init__(self, mean, std):
+        """
+        Initialize the gradient.
+
+        Args:
+            self: (todo): write your description
+            mean: (float): write your description
+            std: (array): write your description
+        """
         super().__init__()
 
         self.mean = nn.Parameter(torch.FloatTensor(mean).reshape(1, 3, 1, 1), requires_grad=False)
         self.std = nn.Parameter(torch.FloatTensor(std).reshape(1, 3, 1, 1), requires_grad=False)
 
     def cuda(self):
+        """
+        Cuda the current cuda.
+
+        Args:
+            self: (todo): write your description
+        """
         self.mean = self.mean.cuda()
         self.std = self.std.cuda()
 
     def forward(self, x):
+        """
+        Forward computation of the gp.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         return (x - self.mean) / self.std
 
 
 class NormalizeV2(nn.Module):
     def __init__(self, mean, std):
+        """
+        Initialize the standard deviation.
+
+        Args:
+            self: (todo): write your description
+            mean: (float): write your description
+            std: (array): write your description
+        """
         super().__init__()
         
         self.mean = torch.FloatTensor(mean).reshape(1, 3, 1, 1).cuda()
         self.std = torch.FloatTensor(std).reshape(1, 3, 1, 1).cuda()
 
     def forward(self, x):
+        """
+        Forward computation of the gp.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         return (x - self.mean) / self.std
 
 
 class SpatialSoftmax(nn.Module):
     # Source: https://gist.github.com/jeasinema/1cba9b40451236ba2cfb507687e08834
     def __init__(self, height, width, channel, temperature=None, data_format='NCHW'):
+        """
+        Initialize the buffer.
+
+        Args:
+            self: (todo): write your description
+            height: (int): write your description
+            width: (int): write your description
+            channel: (todo): write your description
+            temperature: (todo): write your description
+            data_format: (str): write your description
+        """
         super().__init__()
 
         self.data_format = data_format
@@ -134,6 +229,13 @@ class SpatialSoftmax(nn.Module):
         self.register_buffer('pos_y', pos_y)
 
     def forward(self, feature):
+        """
+        Cumulative features
+
+        Args:
+            self: (todo): write your description
+            feature: (todo): write your description
+        """
         # Output:
         #   (N, C*2) x_0 y_0 ...
 
@@ -159,6 +261,14 @@ class SpatialSoftmaxBZ(torch.nn.Module):
     j in [-1, 1]
     """
     def __init__(self, height, width):
+        """
+        Initialize the graph.
+
+        Args:
+            self: (todo): write your description
+            height: (int): write your description
+            width: (int): write your description
+        """
         super().__init__()
 
         self.height = height
@@ -176,6 +286,13 @@ class SpatialSoftmaxBZ(torch.nn.Module):
         self.pos_y = torch.nn.Parameter(self.pos_y, requires_grad=False)
 
     def forward(self, feature):
+        """
+        Calculate the feature
+
+        Args:
+            self: (todo): write your description
+            feature: (todo): write your description
+        """
         flattened = feature.view(feature.shape[0], feature.shape[1], -1)
         softmax = F.softmax(flattened, dim=-1)
 

@@ -15,6 +15,12 @@ PORT = 3000
 
 
 def world_loop(opts_dict):
+    """
+    Run the world loop.
+
+    Args:
+        opts_dict: (dict): write your description
+    """
     params = {
             'spawn': 15,
             'weather': 'clear_noon',
@@ -51,6 +57,11 @@ def world_loop(opts_dict):
 
 
 def main():
+    """
+    Main function.
+
+    Args:
+    """
     import matplotlib.pyplot as plt; plt.ion()
 
     np.random.seed(0)

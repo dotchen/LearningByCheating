@@ -2,6 +2,14 @@ import numpy as np
 
 
 def draw_msra_gaussian(heatmap, center, sigma):
+    """
+    Draw a gaussian gaussian image with a gaussian
+
+    Args:
+        heatmap: (str): write your description
+        center: (float): write your description
+        sigma: (float): write your description
+    """
     tmp_size = sigma * 3
     mu_x = int(center[0] + 0.5)
     mu_y = int(center[1] + 0.5)
@@ -25,6 +33,13 @@ def draw_msra_gaussian(heatmap, center, sigma):
     return heatmap
     
 def gaussian_radius(det_size, min_overlap=0.7):
+    """
+    Return a gaussian distribution.
+
+    Args:
+        det_size: (int): write your description
+        min_overlap: (float): write your description
+    """
     height, width = det_size
     
     a1  = 1

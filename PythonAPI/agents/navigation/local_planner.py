@@ -32,6 +32,12 @@ class RoadOption(Enum):
     CHANGELANERIGHT = 6
     
     def __int__(self):
+        """
+        Returns the int value as an integer.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.value
 
 
@@ -169,6 +175,13 @@ class LocalPlanner(object):
             self._waypoints_queue.append((next_waypoint, road_option))
 
     def set_global_plan(self, current_plan):
+        """
+        Set the waypoints for the waypoints
+
+        Args:
+            self: (todo): write your description
+            current_plan: (str): write your description
+        """
         self._waypoints_queue.clear()
         for elem in current_plan:
             self._waypoints_queue.append(elem)
@@ -290,6 +303,16 @@ def _compute_connection(current_waypoint, next_waypoint):
 
 class LocalPlannerNew(object):
     def __init__(self, vehicle, resolution=15, threshold_before=2.5, threshold_after=5.0):
+        """
+        Initialize the target.
+
+        Args:
+            self: (todo): write your description
+            vehicle: (todo): write your description
+            resolution: (todo): write your description
+            threshold_before: (float): write your description
+            threshold_after: (float): write your description
+        """
         from agents.navigation.global_route_planner import GlobalRoutePlanner
         from agents.navigation.global_route_planner_dao import GlobalRoutePlannerDAO
 
@@ -312,6 +335,14 @@ class LocalPlannerNew(object):
         self.distances = deque(maxlen=20000)
 
     def set_route(self, start, target):
+        """
+        Set a target.
+
+        Args:
+            self: (todo): write your description
+            start: (todo): write your description
+            target: (todo): write your description
+        """
         self._waypoints_queue.clear()
 
         self._route = self._grp.trace_route(start, target)
@@ -339,6 +370,12 @@ class LocalPlannerNew(object):
                 RoadOption.LANEFOLLOW)
 
     def run_step(self):
+        """
+        Run a single waypoints step.
+
+        Args:
+            self: (todo): write your description
+        """
         assert self._route is not None
 
         u = self._vehicle.get_transform().location
@@ -371,6 +408,13 @@ class LocalPlannerNew(object):
             self.target = self._waypoints_queue[0]
 
     def calculate_timeout(self, fps=10):
+        """
+        Calculate the timeout of the current frame.
+
+        Args:
+            self: (todo): write your description
+            fps: (todo): write your description
+        """
         _numpy = lambda p: np.array([p.transform.location.x, p.transform.location.y])
 
         distance = 0
@@ -391,6 +435,14 @@ class LocalPlannerNew(object):
 
 class LocalPlannerOld(object):
     def __init__(self, vehicle, resolution=1.5):
+        """
+        Initialize the target.
+
+        Args:
+            self: (todo): write your description
+            vehicle: (todo): write your description
+            resolution: (todo): write your description
+        """
         from agents.navigation.global_route_planner import GlobalRoutePlanner
         from agents.navigation.global_route_planner_dao import GlobalRoutePlannerDAO
 
@@ -413,6 +465,14 @@ class LocalPlannerOld(object):
         self.distances = deque(maxlen=20000)
 
     def set_route(self, start, target):
+        """
+        Set a target.
+
+        Args:
+            self: (todo): write your description
+            start: (todo): write your description
+            target: (todo): write your description
+        """
         self._waypoints_queue.clear()
 
         self._route = self._grp.trace_route(start, target)
@@ -439,6 +499,12 @@ class LocalPlannerOld(object):
                 RoadOption.LANEFOLLOW)
 
     def run_step(self):
+        """
+        Run a single waypoints.
+
+        Args:
+            self: (todo): write your description
+        """
         assert self._route is not None
 
         vehicle_transform = self._vehicle.get_transform()
@@ -460,6 +526,13 @@ class LocalPlannerOld(object):
             self.target = self._waypoints_queue[0]
 
     def calculate_timeout(self, fps=10):
+        """
+        Calculate the timeout of the current frame.
+
+        Args:
+            self: (todo): write your description
+            fps: (todo): write your description
+        """
         _numpy = lambda p: np.array([p.transform.location.x, p.transform.location.y])
 
         distance = 0

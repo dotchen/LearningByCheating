@@ -9,11 +9,27 @@ DEFAULT_PATH = 'video'
 
 
 def _create_writer(video_path, height, width, fps=20):
+    """
+    Create writer writer.
+
+    Args:
+        video_path: (str): write your description
+        height: (float): write your description
+        width: (float): write your description
+        fps: (str): write your description
+    """
     return cv2.VideoWriter(
             '%s.avi' % video_path, cv2.VideoWriter_fourcc(*'XVID'), fps, (width, height))
 
 
 def show(name, image):
+    """
+    Show an image
+
+    Args:
+        name: (str): write your description
+        image: (array): write your description
+    """
     if image.ndim == 3:
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
@@ -27,6 +43,14 @@ class Dummy(object):
 
     @classmethod
     def init(cls, save_dir=None, save_path=None):
+        """
+        Initialize video.
+
+        Args:
+            cls: (todo): write your description
+            save_dir: (str): write your description
+            save_path: (str): write your description
+        """
         if cls.video is not None:
             cls.video.release()
 
@@ -42,6 +66,13 @@ class Dummy(object):
 
     @classmethod
     def add(cls, image):
+        """
+        Add an image to an image.
+
+        Args:
+            cls: (todo): write your description
+            image: (array): write your description
+        """
         if image.ndim == 3:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 

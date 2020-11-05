@@ -19,28 +19,83 @@ import tqdm
 
 class Vector2(object):
     def __init__(self, x, y):
+        """
+        Initialize a new data object
+
+        Args:
+            self: (todo): write your description
+            x: (int): write your description
+            y: (int): write your description
+        """
         self.x = x
         self.y = y
 
     def __truediv__(self, c):
+        """
+        Convert this vector as a vector.
+
+        Args:
+            self: (todo): write your description
+            c: (int): write your description
+        """
         return Vector2(self.x / c, self.y / c)
 
     def __add__(self, v):
+        """
+        Add a vector to the vector.
+
+        Args:
+            self: (todo): write your description
+            v: (int): write your description
+        """
         return Vector2(self.x + v.x, self.y + v.y)
 
     def __sub__(self, v):
+        """
+        Return the vector of this vector.
+
+        Args:
+            self: (todo): write your description
+            v: (int): write your description
+        """
         return Vector2(self.x - v.x, self.y - v.y)
 
     def dot(self, v):
+        """
+        Returns dot product of two vectors.
+
+        Args:
+            self: (todo): write your description
+            v: (array): write your description
+        """
         return self.x * v.x + self.y * v.y
 
     def cross(self, v):
+        """
+        Returns the cross product of two vectors
+
+        Args:
+            self: (todo): write your description
+            v: (list): write your description
+        """
         return self.x * v.y - self.y * v.x
 
     def norm(self):
+        """
+        Return the norm of this vector.
+
+        Args:
+            self: (todo): write your description
+        """
         return np.sqrt(self.x * self.x + self.y * self.y)
 
     def normalize(self):
+        """
+        Normalize the matrix.
+
+        Args:
+            self: (todo): write your description
+        """
         return self / (self.norm() + 1e-8)
 
 
@@ -72,6 +127,13 @@ def get_collision(p1, p2, lines):
 
 
 def parse(df, lights):
+    """
+    Parse the observed data.
+
+    Args:
+        df: (str): write your description
+        lights: (str): write your description
+    """
     n = len(df)
     t = np.array(list(range(n)))
     traveled = 0.0
@@ -101,6 +163,12 @@ def parse(df, lights):
 
 
 def get_town(town):
+    """
+    Return a list of lines.
+
+    Args:
+        town: (todo): write your description
+    """
     lights = Path('light_town%s.txt' % town).read_text().strip().split('\n')
     lights = [tuple(map(float, x.split())) for x in lights]
     lights = np.array(lights)
@@ -119,6 +187,12 @@ def get_town(town):
 
 
 def main(run_dir):
+    """
+    Main function.
+
+    Args:
+        run_dir: (str): write your description
+    """
     result = list()
 
     for path in sorted(run_dir.glob('*/summary.csv')):

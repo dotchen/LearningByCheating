@@ -22,6 +22,12 @@ log = saver.Experiment()
 
 
 def load_json(path):
+    """
+    Load a json file. json data.
+
+    Args:
+        path: (str): write your description
+    """
     with open(path, 'r') as f:
         data = json.load(f)
 

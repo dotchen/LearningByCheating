@@ -28,6 +28,11 @@ import time
 
 
 def main():
+    """
+    Main function.
+
+    Args:
+    """
     argparser = argparse.ArgumentParser(
         description=__doc__)
     argparser.add_argument(
@@ -73,6 +78,12 @@ def main():
             blueprints = [x for x in blueprints if not x.id.endswith('isetta')]
 
         def try_spawn_random_vehicle_at(transform):
+            """
+            Try to spawn a new hypervisor.
+
+            Args:
+                transform: (todo): write your description
+            """
             blueprint = random.choice(blueprints)
             if blueprint.has_attribute('color'):
                 color = random.choice(blueprint.get_attribute('color').recommended_values)

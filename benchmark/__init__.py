@@ -12,6 +12,12 @@ _suites = dict()
 
 
 def _add(suite_name, *args, **kwargs):
+    """
+    Add suite suite.
+
+    Args:
+        suite_name: (str): write your description
+    """
     assert suite_name not in _suites, '%s is already registered!' % suite_name
 
     town = None
@@ -201,6 +207,16 @@ ALL_SUITES = list(_suites.keys()) + list(_aliases.keys())
 
 
 def make_suite(suite_name, port=2000, big_cam=False, planner='new', client=None):
+    """
+    Return a suite of suite.
+
+    Args:
+        suite_name: (str): write your description
+        port: (int): write your description
+        big_cam: (todo): write your description
+        planner: (todo): write your description
+        client: (todo): write your description
+    """
     assert suite_name in _suites, '%s is not registered!'%suite_name
 
     args, kwargs = _suites[suite_name]
@@ -213,6 +229,12 @@ def make_suite(suite_name, port=2000, big_cam=False, planner='new', client=None)
 
 
 def get_suites(suite_name):
+    """
+    Returns the suite suite with given suite name.
+
+    Args:
+        suite_name: (str): write your description
+    """
     if suite_name.lower() in _aliases:
         return _aliases[suite_name]
 

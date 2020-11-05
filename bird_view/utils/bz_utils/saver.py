@@ -37,6 +37,11 @@ def _preprocess_image(x):
 
 
 def _format(**kwargs):
+    """
+    Format a string representation of the kw.
+
+    Args:
+    """
     result = list()
 
     for k, v in kwargs.items():
@@ -74,13 +79,33 @@ class Experiment(object):
         self.info = lambda **kwargs: self._log.info(_format(**kwargs))
         
     def load_config(self, model_path):
+        """
+        Load config file.
+
+        Args:
+            self: (todo): write your description
+            model_path: (str): write your description
+        """
         log_dir = Path(model_path).parent
         
         with open(str(log_dir / 'config.json'), 'r') as f:
             return json.load(f)
 
     def save_config(self, config_dict):
+        """
+        Save the config to file.
+
+        Args:
+            self: (todo): write your description
+            config_dict: (dict): write your description
+        """
         def _process(x):
+            """
+            Process a dict.
+
+            Args:
+                x: (dict): write your description
+            """
             for key, val in x.items():
                 if isinstance(val, dict):
                     _process(val)
@@ -95,6 +120,13 @@ class Experiment(object):
             json.dump(config, f, indent=4, sort_keys=True)
 
     def scalar(self, is_train=True, **kwargs):
+        """
+        Add scalar scalar.
+
+        Args:
+            self: (todo): write your description
+            is_train: (bool): write your description
+        """
         for k, v in sorted(kwargs.items()):
             key = (is_train, k)
 
@@ -104,12 +136,26 @@ class Experiment(object):
             self.scalars[key].append(v)
 
     def image(self, is_train=True, **kwargs):
+        """
+        Preprocess the image.
+
+        Args:
+            self: (todo): write your description
+            is_train: (bool): write your description
+        """
         writer = self._writer_train if is_train else self._writer_val
 
         for k, v in sorted(kwargs.items()):
             writer.add_image(k, _preprocess_image(v), self.epoch)
 
     def end_epoch(self, net=None):
+        """
+        End the epoch.
+
+        Args:
+            self: (todo): write your description
+            net: (todo): write your description
+        """
         for (is_train, k), v in self.scalars.items():
             info = OrderedDict()
             info['%s_%s' % ('train' if is_train else 'val', k)] = np.mean(v)

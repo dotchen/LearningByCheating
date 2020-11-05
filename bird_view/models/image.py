@@ -21,6 +21,16 @@ PIXELS_PER_METER = 5
         
 class ImagePolicyModelSS(common.ResnetBase):
     def __init__(self, backbone, warp=False, pretrained=False, all_branch=False, **kwargs):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+            backbone: (todo): write your description
+            warp: (int): write your description
+            pretrained: (bool): write your description
+            all_branch: (todo): write your description
+        """
         super().__init__(backbone, pretrained=pretrained, input_channel=3, bias_first=False)
         
         self.c = {
@@ -62,6 +72,15 @@ class ImagePolicyModelSS(common.ResnetBase):
         self.all_branch = all_branch
 
     def forward(self, image, velocity, command):
+        """
+        Parameters ---------- image : px image.
+
+        Args:
+            self: (todo): write your description
+            image: (array): write your description
+            velocity: (todo): write your description
+            command: (todo): write your description
+        """
         if self.warp:
             warped_image = tgm.warp_perspective(image, self.M, dsize=(192, 192))
             resized_image = resize_images(image)
@@ -92,6 +111,16 @@ class ImagePolicyModelSS(common.ResnetBase):
 
 class ImageAgent(Agent):
     def __init__(self, steer_points=None, pid=None, gap=5, camera_args={'x':384,'h':160,'fov':90,'world_y':1.4,'fixed_offset':4.0}, **kwargs):
+        """
+        Initialize the camera.
+
+        Args:
+            self: (todo): write your description
+            steer_points: (int): write your description
+            pid: (int): write your description
+            gap: (todo): write your description
+            camera_args: (str): write your description
+        """
         super().__init__(**kwargs)
 
         self.fixed_offset = float(camera_args['fixed_offset'])
@@ -122,6 +151,14 @@ class ImageAgent(Agent):
         self.last_brake = -1
 
     def run_step(self, observations, teaching=False):
+        """
+        Perform a single step.
+
+        Args:
+            self: (todo): write your description
+            observations: (array): write your description
+            teaching: (todo): write your description
+        """
         rgb = observations['rgb'].copy()
         speed = np.linalg.norm(observations['velocity'])
         _cmd = int(observations['command'])
@@ -196,6 +233,15 @@ class ImageAgent(Agent):
             return control
 
     def unproject(self, output, world_y=1.4, fov=90):
+        """
+        Unproject image
+
+        Args:
+            self: (todo): write your description
+            output: (todo): write your description
+            world_y: (todo): write your description
+            fov: (array): write your description
+        """
 
         cx, cy = self.img_size / 2
         

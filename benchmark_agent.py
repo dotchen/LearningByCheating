@@ -44,6 +44,20 @@ def _agent_factory_hack(model_path, config, autopilot):
 
 
 def run(model_path, port, suite, big_cam, seed, autopilot, resume, max_run=10, show=False):
+    """
+    Run a simulation.
+
+    Args:
+        model_path: (str): write your description
+        port: (int): write your description
+        suite: (todo): write your description
+        big_cam: (int): write your description
+        seed: (int): write your description
+        autopilot: (bool): write your description
+        resume: (bool): write your description
+        max_run: (int): write your description
+        show: (bool): write your description
+    """
     log_dir = model_path.parent
     config = bzu.load_json(str(log_dir / 'config.json'))
 

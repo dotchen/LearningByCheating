@@ -12,6 +12,12 @@ from .agent import Agent
 
 
 def BaselineBranch(p):
+    """
+    Implementation of the network.
+
+    Args:
+        p: (int): write your description
+    """
     return nn.Sequential(
             nn.Linear(512, 256),
             nn.ReLU(True),
@@ -26,6 +32,14 @@ def BaselineBranch(p):
 
 class Baseline(nn.Module):
     def __init__(self, backbone='resnet18', dropout=0.5, **kwargs):
+        """
+        Initialize the graph.
+
+        Args:
+            self: (todo): write your description
+            backbone: (todo): write your description
+            dropout: (str): write your description
+        """
         super().__init__()
 
         conv, c = get_resnet(backbone, input_channel=3)
@@ -74,6 +88,15 @@ class Baseline(nn.Module):
         self.branches = nn.ModuleList([BaselineBranch(p=dropout) for i in range(4)])
 
     def forward(self, image, velocity, command):
+        """
+        Parameters ---------- image : np.
+
+        Args:
+            self: (todo): write your description
+            image: (array): write your description
+            velocity: (todo): write your description
+            command: (todo): write your description
+        """
         h = self.conv(self.rgb_transform(image))
         h = self.global_avg_pool(h).view(-1, self.c)
         v = self.speed_encoder(velocity[...,None])
@@ -92,6 +115,13 @@ class Baseline(nn.Module):
 
 class BaselineAgent(Agent):
     def run_step(self, observations):
+        """
+        Perform a single step.
+
+        Args:
+            self: (todo): write your description
+            observations: (array): write your description
+        """
         rgb = observations['rgb'].copy()
         speed = np.linalg.norm(observations['velocity'])
         command = self.one_hot[int(observations['command']) - 1]

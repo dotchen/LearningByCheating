@@ -19,6 +19,20 @@ PIXEL_OFFSET = 10
 PIXELS_PER_METER = 5
     
 def world_to_pixel(x,y,ox,oy,ori_ox, ori_oy, offset=(-80,160), size=320, angle_jitter=15):
+    """
+    Convert pixel coordinates to pixel coordinates.
+
+    Args:
+        x: (str): write your description
+        y: (str): write your description
+        ox: (str): write your description
+        oy: (str): write your description
+        ori_ox: (bool): write your description
+        ori_oy: (todo): write your description
+        offset: (int): write your description
+        size: (int): write your description
+        angle_jitter: (todo): write your description
+    """
     pixel_dx, pixel_dy = (x-ox)*PIXELS_PER_METER, (y-oy)*PIXELS_PER_METER
     
     pixel_x = pixel_dx*ori_ox+pixel_dy*ori_oy
@@ -30,6 +44,20 @@ def world_to_pixel(x,y,ox,oy,ori_ox, ori_oy, offset=(-80,160), size=320, angle_j
     
 
 def project_to_image(pixel_x, pixel_y, tran=[0.,0.,0.], rot=[0.,0.,0.], fov=90, w=384, h=160, camera_world_z=1.4, crop_size=192):
+    """
+    Convert image coordinates to image coordinates.
+
+    Args:
+        pixel_x: (str): write your description
+        pixel_y: (str): write your description
+        tran: (bool): write your description
+        rot: (todo): write your description
+        fov: (array): write your description
+        w: (array): write your description
+        h: (array): write your description
+        camera_world_z: (str): write your description
+        crop_size: (int): write your description
+    """
     # Apply fixed offset tp pixel_y
     pixel_y -= 2*PIXELS_PER_METER
     
@@ -72,6 +100,23 @@ class ImageDataset(Dataset):
         batch_read_number=819200,
         batch_aug=1,
     ):
+        """
+        Initialize an image.
+
+        Args:
+            self: (todo): write your description
+            dataset_path: (str): write your description
+            rgb_shape: (str): write your description
+            img_size: (int): write your description
+            crop_size: (int): write your description
+            gap: (todo): write your description
+            n_step: (float): write your description
+            gaussian_radius: (float): write your description
+            down_ratio: (todo): write your description
+            augment_strategy: (str): write your description
+            batch_read_number: (int): write your description
+            batch_aug: (todo): write your description
+        """
         self._name_map = {}
         
         self.file_map = {}
@@ -123,9 +168,22 @@ class ImageDataset(Dataset):
         self.batch_read_number = batch_read_number
         
     def __len__(self):
+        """
+        Returns the length of the file.
+
+        Args:
+            self: (todo): write your description
+        """
         return len(self.file_map)
 
     def __getitem__(self, idx):
+        """
+        Return the item from the item isochrone.
+
+        Args:
+            self: (todo): write your description
+            idx: (list): write your description
+        """
 
         lmdb_txn = self.file_map[idx]
         index = self.idx_map[idx]
@@ -233,6 +291,18 @@ def load_image_data(dataset_path,
         # rgb_mean=[0.29813555, 0.31239682, 0.33620676],
         # rgb_std=[0.0668446, 0.06680295, 0.07329721],
     ):
+    """
+    Loads images.
+
+    Args:
+        dataset_path: (str): write your description
+        batch_size: (int): write your description
+        num_workers: (int): write your description
+        shuffle: (bool): write your description
+        n_step: (int): write your description
+        gap: (todo): write your description
+        augment: (todo): write your description
+    """
 
     dataset = ImageDataset(
         dataset_path,
@@ -249,18 +319,48 @@ def load_image_data(dataset_path,
 
 class Wrap(Dataset):
     def __init__(self, data, batch_size, samples):
+        """
+        Initialize data.
+
+        Args:
+            self: (todo): write your description
+            data: (todo): write your description
+            batch_size: (int): write your description
+            samples: (list): write your description
+        """
         self.data = data
         self.batch_size = batch_size
         self.samples = samples
 
     def __len__(self):
+        """
+        Returns the length of the batch.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.batch_size * self.samples
 
     def __getitem__(self, i):
+        """
+        Get the item from the given index.
+
+        Args:
+            self: (todo): write your description
+            i: (todo): write your description
+        """
         return self.data[np.random.randint(len(self.data))]
 
 
 def _dataloader(data, batch_size, num_workers):
+    """
+    Determine the dataframe.
+
+    Args:
+        data: (todo): write your description
+        batch_size: (int): write your description
+        num_workers: (int): write your description
+    """
     return DataLoader(
             data, batch_size=batch_size, num_workers=num_workers,
             shuffle=True, drop_last=True, pin_memory=True)
@@ -270,10 +370,30 @@ def get_image(
         dataset_dir,
         batch_size=32, num_workers=0, shuffle=True, augment=None,
         n_step=5, gap=5, batch_aug=1):
+    """
+    Loads the dataset.
+
+    Args:
+        dataset_dir: (str): write your description
+        batch_size: (int): write your description
+        num_workers: (int): write your description
+        shuffle: (bool): write your description
+        augment: (int): write your description
+        n_step: (int): write your description
+        gap: (int): write your description
+        batch_aug: (int): write your description
+    """
 
     # import pdb; pdb.set_trace()
 
     def make_dataset(dir_name, is_train):
+        """
+        Create dataset.
+
+        Args:
+            dir_name: (str): write your description
+            is_train: (bool): write your description
+        """
         _dataset_dir = str(Path(dataset_dir) / dir_name)
         _samples = 1000 if is_train else 10
         _num_workers = num_workers if is_train else 0

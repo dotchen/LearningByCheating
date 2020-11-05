@@ -6,6 +6,12 @@ from pathlib import Path
 
 
 def main(path_name):
+    """
+    Parse function.
+
+    Args:
+        path_name: (str): write your description
+    """
 
 	performance = dict()
 

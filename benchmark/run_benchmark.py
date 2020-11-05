@@ -12,6 +12,17 @@ from bird_view.models.common import crop_birdview
 
 
 def _paint(observations, control, diagnostic, debug, env, show=False):
+    """
+    Paint the image
+
+    Args:
+        observations: (todo): write your description
+        control: (todo): write your description
+        diagnostic: (todo): write your description
+        debug: (dict): write your description
+        env: (todo): write your description
+        show: (bool): write your description
+    """
     import cv2
     import numpy as np
         
@@ -33,6 +44,14 @@ def _paint(observations, control, diagnostic, debug, env, show=False):
         canvas = np.uint8(observations['rgb']).copy()
 
     def _stick_together(a, b, axis=1):
+        """
+        Concat ( b ) yields a b.
+
+        Args:
+            a: (str): write your description
+            b: (str): write your description
+            axis: (int): write your description
+        """
 
         if axis == 1:
             h = min(a.shape[0], b.shape[0])
@@ -57,6 +76,17 @@ def _paint(observations, control, diagnostic, debug, env, show=False):
             return np.concatenate([a, b], 0)
 
     def _write(text, i, j, canvas=canvas, fontsize=0.4):
+        """
+        Writes text to txt.
+
+        Args:
+            text: (str): write your description
+            i: (todo): write your description
+            j: (todo): write your description
+            canvas: (todo): write your description
+            canvas: (todo): write your description
+            fontsize: (int): write your description
+        """
         rows = [x * (canvas.shape[0] // 10) for x in range(10+1)]
         cols = [x * (canvas.shape[1] // 9) for x in range(9+1)]
         cv2.putText(
@@ -164,6 +194,19 @@ def _paint(observations, control, diagnostic, debug, env, show=False):
 
 
 def run_single(env, weather, start, target, agent_maker, seed, autopilot, show=False):
+    """
+    Run a single single simulation.
+
+    Args:
+        env: (todo): write your description
+        weather: (todo): write your description
+        start: (todo): write your description
+        target: (todo): write your description
+        agent_maker: (todo): write your description
+        seed: (int): write your description
+        autopilot: (str): write your description
+        show: (bool): write your description
+    """
     # HACK: deterministic vehicle spawns.
     env.seed = seed
     env.init(start=start, target=target, weather=cu.PRESET_WEATHERS[weather])

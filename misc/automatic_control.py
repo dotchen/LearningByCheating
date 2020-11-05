@@ -93,6 +93,11 @@ from agents.navigation.basic_agent import *
 # ==============================================================================
 
 def find_weather_presets():
+    """
+    Find all weather presets.
+
+    Args:
+    """
     rgx = re.compile('.+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)')
     name = lambda x: ' '.join(m.group(0) for m in rgx.finditer(x))
     presets = [x for x in dir(carla.WeatherParameters) if re.match('[A-Z].+', x)]
@@ -100,6 +105,13 @@ def find_weather_presets():
 
 
 def get_actor_display_name(actor, truncate=250):
+    """
+    Get actor name
+
+    Args:
+        actor: (todo): write your description
+        truncate: (str): write your description
+    """
     name = ' '.join(actor.type_id.replace('_', '.').title().split('.')[1:])
     return (name[:truncate-1] + u'\u2026') if len(name) > truncate else name
 
@@ -110,6 +122,14 @@ def get_actor_display_name(actor, truncate=250):
 
 class World(object):
     def __init__(self, carla_world, hud):
+        """
+        Initialize the world.
+
+        Args:
+            self: (todo): write your description
+            carla_world: (todo): write your description
+            hud: (todo): write your description
+        """
         self.world = carla_world
         self.map = self.world.get_map()
         self.hud = hud
@@ -123,6 +143,12 @@ class World(object):
         self.world.on_tick(hud.on_world_tick)
 
     def restart(self):
+        """
+        Restart the camera.
+
+        Args:
+            self: (todo): write your description
+        """
         # Keep same camera config if the camera manager exists.
         cam_index = self.camera_manager._index if self.camera_manager is not None else 0
         cam_pos_index = self.camera_manager._transform_index if self.camera_manager is not None else 0
@@ -160,6 +186,13 @@ class World(object):
         self.hud.notification(actor_type)
 
     def next_weather(self, reverse=False):
+        """
+        Get the next weather.
+
+        Args:
+            self: (todo): write your description
+            reverse: (bool): write your description
+        """
         self._weather_index += -1 if reverse else 1
         self._weather_index %= len(self._weather_presets)
         preset = self._weather_presets[self._weather_index]
@@ -167,13 +200,33 @@ class World(object):
         self.vehicle.get_world().set_weather(preset[0])
 
     def tick(self, clock):
+        """
+        !
+
+        Args:
+            self: (todo): write your description
+            clock: (todo): write your description
+        """
         self.hud.tick(self, clock)
 
     def render(self, display):
+        """
+        Render the camera.
+
+        Args:
+            self: (todo): write your description
+            display: (todo): write your description
+        """
         self.camera_manager.render(display)
         self.hud.render(display)
 
     def destroy(self):
+        """
+        Destroy the sensor.
+
+        Args:
+            self: (todo): write your description
+        """
         actors = [
             self.camera_manager.sensor,
             self.collision_sensor.sensor,
@@ -190,6 +243,14 @@ class World(object):
 
 class KeyboardControl(object):
     def __init__(self, world, start_in_autopilot):
+        """
+        Initialize the world.
+
+        Args:
+            self: (todo): write your description
+            world: (todo): write your description
+            start_in_autopilot: (todo): write your description
+        """
         self._autopilot_enabled = start_in_autopilot
         self._control = carla.VehicleControl()
         self._steer_cache = 0.0
@@ -197,6 +258,14 @@ class KeyboardControl(object):
         world.hud.notification("Press 'H' or '?' for help.", seconds=4.0)
 
     def parse_events(self, world, clock):
+        """
+        Parse event.
+
+        Args:
+            self: (todo): write your description
+            world: (todo): write your description
+            clock: (todo): write your description
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return True
@@ -241,6 +310,14 @@ class KeyboardControl(object):
             self._control.reverse = self._control.gear < 0
 
     def _parse_keys(self, keys, milliseconds):
+        """
+        Parses the keys and adds them.
+
+        Args:
+            self: (todo): write your description
+            keys: (str): write your description
+            milliseconds: (str): write your description
+        """
         self._control.throttle = 1.0 if keys[K_UP] or keys[K_w] else 0.0
         steer_increment = 5e-4 * milliseconds
         if keys[K_LEFT] or keys[K_a]:
@@ -256,6 +333,12 @@ class KeyboardControl(object):
 
     @staticmethod
     def _is_quit_shortcut(key):
+        """
+        Check if a game is a game s game shortcut.
+
+        Args:
+            key: (str): write your description
+        """
         return (key == K_ESCAPE) or (key == K_q and pygame.key.get_mods() & KMOD_CTRL)
 
 
@@ -266,6 +349,14 @@ class KeyboardControl(object):
 
 class HUD(object):
     def __init__(self, width, height):
+        """
+        Initialize the game.
+
+        Args:
+            self: (todo): write your description
+            width: (int): write your description
+            height: (int): write your description
+        """
         self.dim = (width, height)
         font = pygame.font.Font(pygame.font.get_default_font(), 20)
         fonts = [x for x in pygame.font.get_fonts() if 'mono' in x]
@@ -283,12 +374,27 @@ class HUD(object):
         self._server_clock = pygame.time.Clock()
 
     def on_world_tick(self, timestamp):
+        """
+        This method is called when ack.
+
+        Args:
+            self: (todo): write your description
+            timestamp: (int): write your description
+        """
         self._server_clock.tick()
         self.server_fps = self._server_clock.get_fps()
         self.frame_number = timestamp.frame_count
         self.simulation_time = timestamp.elapsed_seconds
 
     def tick(self, world, clock):
+        """
+        Displays the world.
+
+        Args:
+            self: (todo): write your description
+            world: (todo): write your description
+            clock: (todo): write your description
+        """
         if not self._show_info:
             return
         t = world.vehicle.get_transform()
@@ -340,15 +446,43 @@ class HUD(object):
         self._notifications.tick(world, clock)
 
     def toggle_info(self):
+        """
+        Toggle show info.
+
+        Args:
+            self: (todo): write your description
+        """
         self._show_info = not self._show_info
 
     def notification(self, text, seconds=2.0):
+        """
+        Notify the notification.
+
+        Args:
+            self: (bool): write your description
+            text: (str): write your description
+            seconds: (bool): write your description
+        """
         self._notifications.set_text(text, seconds=seconds)
 
     def error(self, text):
+        """
+        Sets the text.
+
+        Args:
+            self: (todo): write your description
+            text: (str): write your description
+        """
         self._notifications.set_text('Error: %s' % text, (255, 0, 0))
 
     def render(self, display):
+        """
+        Draws the chart.
+
+        Args:
+            self: (todo): write your description
+            display: (str): write your description
+        """
         if self._show_info:
             info_surface = pygame.Surface((220, self.dim[1]))
             info_surface.set_alpha(100)
@@ -393,6 +527,15 @@ class HUD(object):
 
 class FadingText(object):
     def __init__(self, font, dim, pos):
+        """
+        Initialize the font.
+
+        Args:
+            self: (todo): write your description
+            font: (todo): write your description
+            dim: (int): write your description
+            pos: (int): write your description
+        """
         self.font = font
         self.dim = dim
         self.pos = pos
@@ -400,6 +543,15 @@ class FadingText(object):
         self.surface = pygame.Surface(self.dim)
 
     def set_text(self, text, color=(255, 255, 255), seconds=2.0):
+        """
+        Set a surface.
+
+        Args:
+            self: (todo): write your description
+            text: (str): write your description
+            color: (str): write your description
+            seconds: (todo): write your description
+        """
         text_texture = self.font.render(text, True, color)
         self.surface = pygame.Surface(self.dim)
         self.seconds_left = seconds
@@ -407,11 +559,26 @@ class FadingText(object):
         self.surface.blit(text_texture, (10, 11))
 
     def tick(self, _, clock):
+        """
+        Emits the widget.
+
+        Args:
+            self: (todo): write your description
+            _: (int): write your description
+            clock: (todo): write your description
+        """
         delta_seconds = 1e-3 * clock.get_time()
         self.seconds_left = max(0.0, self.seconds_left - delta_seconds)
         self.surface.set_alpha(500.0 * self.seconds_left)
 
     def render(self, display):
+        """
+        Render the display.
+
+        Args:
+            self: (todo): write your description
+            display: (str): write your description
+        """
         display.blit(self.surface, self.pos)
 
 # ==============================================================================
@@ -421,6 +588,15 @@ class FadingText(object):
 
 class HelpText(object):
     def __init__(self, font, width, height):
+        """
+        Draw a surface.
+
+        Args:
+            self: (todo): write your description
+            font: (todo): write your description
+            width: (int): write your description
+            height: (int): write your description
+        """
         lines = __doc__.split('\n')
         self.font = font
         self.dim = (680, len(lines) * 22 + 12)
@@ -435,9 +611,22 @@ class HelpText(object):
         self.surface.set_alpha(220)
 
     def toggle(self):
+        """
+        Toggle the display.
+
+        Args:
+            self: (todo): write your description
+        """
         self._render = not self._render
 
     def render(self, display):
+        """
+        Render the widget.
+
+        Args:
+            self: (todo): write your description
+            display: (str): write your description
+        """
         if self._render:
             display.blit(self.surface, self.pos)
 
@@ -448,6 +637,14 @@ class HelpText(object):
 
 class CollisionSensor(object):
     def __init__(self, parent_actor, hud):
+        """
+        Initialize the sensor.
+
+        Args:
+            self: (todo): write your description
+            parent_actor: (todo): write your description
+            hud: (todo): write your description
+        """
         self.sensor = None
         self._history = []
         self._parent = parent_actor
@@ -461,6 +658,12 @@ class CollisionSensor(object):
         self.sensor.listen(lambda event: CollisionSensor._on_collision(weak_self, event))
 
     def get_collision_history(self):
+        """
+        : return : class : list
+
+        Args:
+            self: (todo): write your description
+        """
         history = collections.defaultdict(int)
         for frame, intensity in self._history:
             history[frame] += intensity
@@ -468,6 +671,13 @@ class CollisionSensor(object):
 
     @staticmethod
     def _on_collision(weak_self, event):
+        """
+        Collision is clicked event.
+
+        Args:
+            weak_self: (todo): write your description
+            event: (todo): write your description
+        """
         self = weak_self()
         if not self:
             return
@@ -486,6 +696,14 @@ class CollisionSensor(object):
 
 class LaneInvasionSensor(object):
     def __init__(self, parent_actor, hud):
+        """
+        Initialize the sensor.
+
+        Args:
+            self: (todo): write your description
+            parent_actor: (todo): write your description
+            hud: (todo): write your description
+        """
         self.sensor = None
         self._parent = parent_actor
         self._hud = hud
@@ -499,6 +717,13 @@ class LaneInvasionSensor(object):
 
     @staticmethod
     def _on_invasion(weak_self, event):
+        """
+        Invoked when the text.
+
+        Args:
+            weak_self: (todo): write your description
+            event: (todo): write your description
+        """
         self = weak_self()
         if not self:
             return
@@ -512,6 +737,14 @@ class LaneInvasionSensor(object):
 
 class CameraManager(object):
     def __init__(self, parent_actor, hud):
+        """
+        Initialize the camera.
+
+        Args:
+            self: (todo): write your description
+            parent_actor: (todo): write your description
+            hud: (todo): write your description
+        """
         self.sensor = None
         self._surface = None
         self._parent = parent_actor
@@ -541,10 +774,24 @@ class CameraManager(object):
         self._index = None
 
     def toggle_camera(self):
+        """
+        Toggle camera camera.
+
+        Args:
+            self: (todo): write your description
+        """
         self._transform_index = (self._transform_index + 1) % len(self._camera_transforms)
         self.sensor.set_transform(self._camera_transforms[self._transform_index])
 
     def set_sensor(self, index, notify=True):
+        """
+        Set the sensor.
+
+        Args:
+            self: (todo): write your description
+            index: (int): write your description
+            notify: (str): write your description
+        """
         index = index % len(self._sensors)
         needs_respawn = True if self._index is None \
             else self._sensors[index][0] != self._sensors[self._index][0]
@@ -565,18 +812,44 @@ class CameraManager(object):
         self._index = index
 
     def next_sensor(self):
+        """
+        Set the next sensor.
+
+        Args:
+            self: (todo): write your description
+        """
         self.set_sensor(self._index + 1)
 
     def toggle_recording(self):
+        """
+        Toggle recording.
+
+        Args:
+            self: (todo): write your description
+        """
         self._recording = not self._recording
         self._hud.notification('Recording %s' % ('On' if self._recording else 'Off'))
 
     def render(self, display):
+        """
+        Render the surface.
+
+        Args:
+            self: (todo): write your description
+            display: (str): write your description
+        """
         if self._surface is not None:
             display.blit(self._surface, (0, 0))
 
     @staticmethod
     def _parse_image(weak_self, image):
+        """
+        Parses an image.
+
+        Args:
+            weak_self: (todo): write your description
+            image: (todo): write your description
+        """
         self = weak_self()
         if not self:
             return
@@ -609,6 +882,11 @@ class CameraManager(object):
 # ==============================================================================
 
 def game_loop(args):
+    """
+    Main loop.
+
+    Args:
+    """
     pygame.init()
     pygame.font.init()
     world = None
@@ -662,6 +940,11 @@ def game_loop(args):
 
 
 def main():
+    """
+    Main function.
+
+    Args:
+    """
     argparser = argparse.ArgumentParser(
         description='CARLA Manual Control Client')
     argparser.add_argument(

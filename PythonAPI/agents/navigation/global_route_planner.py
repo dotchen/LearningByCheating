@@ -342,6 +342,14 @@ class GlobalRoutePlanner(object):
         return plan
 
     def _find_closest_in_list(self, current_waypoint, waypoint_list):
+        """
+        Find closest waypoint in the waypoint.
+
+        Args:
+            self: (todo): write your description
+            current_waypoint: (todo): write your description
+            waypoint_list: (list): write your description
+        """
         min_distance = float('inf')
         closest_index = -1
         for i, waypoint in enumerate(waypoint_list):

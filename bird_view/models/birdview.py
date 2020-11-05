@@ -19,6 +19,11 @@ PIXELS_PER_METER = 5
 
 
 def regression_base():
+    """
+    A base base base base base convolution.
+
+    Args:
+    """
     return nn.Sequential(
             nn.ConvTranspose2d(640,256,4,2,1,0),
             nn.BatchNorm2d(256),
@@ -32,6 +37,11 @@ def regression_base():
 
 
 def spatial_softmax_base():
+    """
+    Computes the softmax.
+
+    Args:
+    """
     return nn.Sequential(
             nn.BatchNorm2d(640),
             nn.ConvTranspose2d(640,256,3,2,1,1),
@@ -46,6 +56,16 @@ def spatial_softmax_base():
 
 class BirdViewPolicyModelSS(common.ResnetBase):
     def __init__(self, backbone='resnet18', input_channel=7, n_step=5, all_branch=False, **kwargs):
+        """
+        Initialize a batch.
+
+        Args:
+            self: (todo): write your description
+            backbone: (todo): write your description
+            input_channel: (todo): write your description
+            n_step: (float): write your description
+            all_branch: (todo): write your description
+        """
         super().__init__(backbone=backbone, input_channel=input_channel, bias_first=False)
 
         self.deconv = spatial_softmax_base()
@@ -59,6 +79,15 @@ class BirdViewPolicyModelSS(common.ResnetBase):
         self.all_branch = all_branch
 
     def forward(self, bird_view, velocity, command):
+        """
+        Forward computation. forward_view : int ) the forward ).
+
+        Args:
+            self: (todo): write your description
+            bird_view: (todo): write your description
+            velocity: (todo): write your description
+            command: (todo): write your description
+        """
         h = self.conv(bird_view)
         b, c, kh, kw = h.size()
 
@@ -81,6 +110,15 @@ class BirdViewPolicyModelSS(common.ResnetBase):
 
 class BirdViewAgent(Agent):
     def __init__(self, steer_points=None, pid=None, gap=5, **kwargs):
+        """
+        Initialize the pid.
+
+        Args:
+            self: (todo): write your description
+            steer_points: (int): write your description
+            pid: (int): write your description
+            gap: (todo): write your description
+        """
         super().__init__(**kwargs)
 
         self.speed_control = PIDController(K_P=1.0, K_I=0.1, K_D=2.5)
@@ -102,6 +140,14 @@ class BirdViewAgent(Agent):
         self.gap = gap
 
     def run_step(self, observations, teaching=False):
+        """
+        Run a single step.
+
+        Args:
+            self: (todo): write your description
+            observations: (array): write your description
+            teaching: (todo): write your description
+        """
         birdview = common.crop_birdview(observations['birdview'], dx=-10)
         speed = np.linalg.norm(observations['velocity'])
         command = self.one_hot[int(observations['command']) - 1]

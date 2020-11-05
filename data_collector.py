@@ -33,6 +33,13 @@ from bird_view.models.roaming import RoamingAgentMine
 
 
 def _debug(observations, agent_debug):
+    """
+    Run the debug information for the agent.
+
+    Args:
+        observations: (array): write your description
+        agent_debug: (bool): write your description
+    """
     import cv2
 
     processed = cu.process(observations)
@@ -55,6 +62,14 @@ def _debug(observations, agent_debug):
     R = 2
 
     def _write(text, i, j):
+        """
+        Print text to the screen.
+
+        Args:
+            text: (str): write your description
+            i: (todo): write your description
+            j: (todo): write your description
+        """
         cv2.putText(
                 canvas, text, (cols[j], rows[i]),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.4, WHITE, 1)
@@ -75,6 +90,14 @@ def _debug(observations, agent_debug):
     birdview = cu.visualize_birdview(crop_birdview(processed['birdview']))
 
     def _dot(x, y, color):
+        """
+        Draws a dot on the given color.
+
+        Args:
+            x: (array): write your description
+            y: (array): write your description
+            color: (str): write your description
+        """
         x = int(x)
         y = int(y)
         birdview[176-r-x:176+r+1-x,96-r+y:96+r+1+y] = color
@@ -93,6 +116,13 @@ def _debug(observations, agent_debug):
     _dot(u[0], u[1], [255, 255, 255])
 
     def _stick_together(a, b):
+        """
+        Concat ( b )
+
+        Args:
+            a: (str): write your description
+            b: (str): write your description
+        """
         h = min(a.shape[0], b.shape[0])
 
         r1 = h / a.shape[0]
@@ -115,6 +145,14 @@ class NoisyAgent(RoamingAgentMine):
     State can be "drive" or "noise".
     """
     def __init__(self, env, noise=None):
+        """
+        Initialize the environment.
+
+        Args:
+            self: (todo): write your description
+            env: (todo): write your description
+            noise: (float): write your description
+        """
         super().__init__(env._player, resolution=1, threshold_before=7.5, threshold_after=5.)
 
         # self.params = {'drive': (100, 'noise'), 'noise': (10, 'drive')}
@@ -130,6 +168,13 @@ class NoisyAgent(RoamingAgentMine):
         self.turn_control = PIDController(K_P=0.75, K_I=1.0/20, K_D=0.0)
 
     def run_step(self, observations):
+        """
+        Run a single step.
+
+        Args:
+            self: (todo): write your description
+            observations: (array): write your description
+        """
         self.steps += 1
 
         last_status = self.state
@@ -163,6 +208,13 @@ class NoisyAgent(RoamingAgentMine):
 
 
 def get_episode(env, params):
+    """
+    Get an episode.
+
+    Args:
+        env: (todo): write your description
+        params: (dict): write your description
+    """
     data = list()
     progress = tqdm.tqdm(range(params.frames_per_episode), desc='Frame')
     start, target = env.pose_tasks[np.random.randint(len(env.pose_tasks))]
@@ -213,6 +265,12 @@ def get_episode(env, params):
 
 
 def main(params):
+    """
+    Main function.
+
+    Args:
+        params: (dict): write your description
+    """
 
     save_dir = Path(params.dataset_path)
     save_dir.mkdir(parents=True, exist_ok=True)
