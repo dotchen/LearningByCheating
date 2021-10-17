@@ -15,7 +15,7 @@ Code in CARLA 0.9.5 is coming soon.
 If you find this repo to be useful in your research, please consider citing our work
 ```
 @inproceedings{chen2019lbc,
-  author    = {Dian Chen and Brady Zhou and Vladlen Koltun and Philipp Kr\"ahenb\"uhl},
+  author    = {Chen, Dian and Zhou, Brady and Koltun, Vladlen and Kr\"ahenb\"uhl, Philipp},
   title     = {Learning by Cheating},
   booktitle = {Conference on Robot Learning (CoRL)},
   year      = {2019},
