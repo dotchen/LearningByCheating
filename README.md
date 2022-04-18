@@ -23,6 +23,7 @@ If you find this repo to be useful in your research, please consider citing our 
 ```
 
 ## Updates
+* (March 2022) Checkout our latest follow-up work: [LAV](https://github.com/dotchen/LAV)!
 * (May 2021) Checkout our latest follow-up work: [World on Rails](https://github.com/dotchen/WorldOnRails) 
 * (2020) Checkout our submission to the [2020 CARLA Challenge](https://github.com/bradyz/2020_CARLA_challenge)!
 
